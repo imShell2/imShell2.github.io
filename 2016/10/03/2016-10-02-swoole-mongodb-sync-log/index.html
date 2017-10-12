@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="起因自己的创业项目中,原来的日志写入是用了yii2的默认写入方式,也就是写入文件的方式,这种方式简单粗暴,也是最原始的写入方式,但是有时候要去定位日志错误,真的是一件很烦恼的事情,特别是现在并发访问量高的时候,日志刷新速度很快,而且占用磁盘也多,服务器的io同时也增高了,直接让服务器的压力增大. 拆出来因此,决定把日志独立出来,也就是存储方式改为db存储,一开始考虑了mysql,但目前mysql只">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用swoole,mongodb异步记录日志">
+<meta property="og:url" content="http://yoursite.com/2016/10/03/2016-10-02-swoole-mongodb-sync-log/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="起因自己的创业项目中,原来的日志写入是用了yii2的默认写入方式,也就是写入文件的方式,这种方式简单粗暴,也是最原始的写入方式,但是有时候要去定位日志错误,真的是一件很烦恼的事情,特别是现在并发访问量高的时候,日志刷新速度很快,而且占用磁盘也多,服务器的io同时也增高了,直接让服务器的压力增大. 拆出来因此,决定把日志独立出来,也就是存储方式改为db存储,一开始考虑了mysql,但目前mysql只">
+<meta property="og:updated_time" content="2017-10-11T16:22:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用swoole,mongodb异步记录日志">
+<meta name="twitter:description" content="起因自己的创业项目中,原来的日志写入是用了yii2的默认写入方式,也就是写入文件的方式,这种方式简单粗暴,也是最原始的写入方式,但是有时候要去定位日志错误,真的是一件很烦恼的事情,特别是现在并发访问量高的时候,日志刷新速度很快,而且占用磁盘也多,服务器的io同时也增高了,直接让服务器的压力增大. 拆出来因此,决定把日志独立出来,也就是存储方式改为db存储,一开始考虑了mysql,但目前mysql只">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/03/2016-10-02-swoole-mongodb-sync-log/"/>
+
+
+
+
+
+  <title>使用swoole,mongodb异步记录日志 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/imshell"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/03/2016-10-02-swoole-mongodb-sync-log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用swoole,mongodb异步记录日志</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-03T00:30:35+08:00">
+                2016-10-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>自己的创业项目中,原来的日志写入是用了yii2的默认写入方式,也就是写入文件的方式,这种方式简单粗暴,也是最原始的写入方式,但是有时候要去定位日志错误,真的是一件很烦恼的事情,特别是现在并发访问量高的时候,日志刷新速度很快,而且占用磁盘也多,服务器的io同时也增高了,直接让服务器的压力增大.</p>
+<h1 id="拆出来"><a href="#拆出来" class="headerlink" title="拆出来"></a>拆出来</h1><p>因此,决定把日志独立出来,也就是存储方式改为db存储,一开始考虑了mysql,但目前mysql只有一台服务器,如果用mysql做日志存储系统,那么高并发的写入也一样会影响到平时的业务写入,因为写入频繁,会导致mysql的行所增多,所以mysql就否认了.mongodb是一个不错的选择,由于是结构化存储,很适合日志这种无规则,大规模的写入.</p>
+<h1 id="异步写入"><a href="#异步写入" class="headerlink" title="异步写入"></a>异步写入</h1><p>尽管mongodb是独立一台服务器,但是频繁同步的日志写入,也一样要求服务器不断去连接mongodb,插入mongodb,这也会导致一部分的网络开销,因此我也想到了异步的方式,<br>说到异步的第三方组件,可是很多很多的,比较常见的就是使用消息队列(RabbitMq,ActiveMq),但是要为了一个日志系统,引入一个比较重的消息队列,就不太值得了,于是想到<br>了现在很火的<code>swoole</code>.swoole的学习成本还是挺高的,如果对网络编程这块不熟,很多东西都是模模糊糊,比如什么是进程和线程的区别,什么是worker/reactor,这些概念<br>还是需要一定基础支撑的,但是没关系,本次我的需求很简单,我只需要用到swoole的<code>task</code>来实现异步写入日志就可以了.</p>
+<h1 id="swoole的task介绍"><a href="#swoole的task介绍" class="headerlink" title="swoole的task介绍"></a>swoole的task介绍</h1><p>swoole的业务逻辑部分是同步阻塞运行的,如果遇到一些耗时较大的操作,例如访问数据库、广播消息等,就会影响服务器的响应速度.因此Swoole提供了Task功能,<br>将这些耗时操作放到另外的进程去处理,当前进程继续执行后面的逻辑.这是官方对task功能的一个简述,那么正好适合于我们去做异步写入日志的功能.</p>
+<h1 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h1><p>1.首要任务是把mongodb搭建起来,并用composer安装yii2-mongodb,安装方法请参照github,很简单所以不介绍了.</p>
+<p>2.安装swoole.</p>
+<p>3.编写一个<code>swoole_server</code>.这个server主要是用来处理客户端传过来的task,我的个人做法是在项目中的console中写一个controller,集成yii/console/controller,<br>这样我们就可以直接在命令行用yii内置的方式去跑起来了,下面是代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div></pre></td><td class="code"><pre><div class="line">/** Swoole任务服务器</div><div class="line"> * Class SwooleTaskController</div><div class="line"> * @package console\controllers</div><div class="line"> */</div><div class="line">class SwooleTaskController extends Controller</div><div class="line">&#123;</div><div class="line">    /**</div><div class="line">     * @var</div><div class="line">     */</div><div class="line">    private $serv;</div><div class="line"></div><div class="line">    /**</div><div class="line">     *</div><div class="line">     */</div><div class="line">    public function actionRun()</div><div class="line">    &#123;</div><div class="line">        $this-&gt;serv = new \swoole_server(&quot;0.0.0.0&quot;, 9501);</div><div class="line">        $this-&gt;serv-&gt;set(array(</div><div class="line">            &apos;worker_num&apos; =&gt; 1,   //一般设置为服务器CPU数的1-4倍</div><div class="line">            &apos;daemonize&apos; =&gt; false,  //这里我不用swoole的守护进程,而是使用了supervisor来管理进程</div><div class="line">            &apos;max_request&apos; =&gt; 10000,</div><div class="line">            &apos;dispatch_mode&apos; =&gt; 2,</div><div class="line">            &apos;task_worker_num&apos; =&gt; 8,  //task进程的数量</div><div class="line">            &quot;task_ipc_mode &quot; =&gt; 3,  //使用消息队列通信，并设置为争抢模式,</div><div class="line">            &apos;open_eof_split&apos; =&gt; true,</div><div class="line">            &apos;package_eof&apos; =&gt; &quot;\r\n\r\n&quot;         // 分包分隔符，防止多次send被合包发送</div><div class="line">        ));</div><div class="line"></div><div class="line">        $this-&gt;serv-&gt;on(&apos;Start&apos;, array($this, &apos;onStart&apos;));</div><div class="line">        $this-&gt;serv-&gt;on(&apos;Receive&apos;, array($this, &apos;onReceive&apos;));</div><div class="line">        $this-&gt;serv-&gt;on(&apos;Task&apos;, array($this, &apos;onTask&apos;));</div><div class="line">        $this-&gt;serv-&gt;on(&apos;Finish&apos;, array($this, &apos;onFinish&apos;));</div><div class="line"></div><div class="line">        $this-&gt;serv-&gt;start();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     *</div><div class="line">     */</div><div class="line">    public function onStart()</div><div class="line">    &#123;</div><div class="line">        echo &quot;start\n&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * @param \swoole_server $serv</div><div class="line">     * @param $fd</div><div class="line">     * @param $from_id</div><div class="line">     * @param $data</div><div class="line">     */</div><div class="line">    public function onReceive(\swoole_server $serv, $fd, $from_id, $data)</div><div class="line">    &#123;</div><div class="line">        $serv-&gt;task($data);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * @param \swoole_server $serv</div><div class="line">     * @param $task_id</div><div class="line">     * @param $from_id</div><div class="line">     * @param $data</div><div class="line">     */</div><div class="line">    public function onTask(\swoole_server $serv, $task_id, $from_id, $data)</div><div class="line">    &#123;</div><div class="line">        $data = unserialize($data);</div><div class="line"></div><div class="line">        // 任务分发</div><div class="line">        if(!empty($data[&apos;action&apos;])) &#123;</div><div class="line">            $param = $data;</div><div class="line">            unset($param[&apos;action&apos;]);</div><div class="line">            $this-&gt;&#123;$data[&apos;action&apos;]&#125;($param);</div><div class="line">            $serv-&gt;finish($data);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * @param $serv</div><div class="line">     * @param $task_id</div><div class="line">     * @param $data</div><div class="line">     */</div><div class="line">    public function onFinish($serv, $task_id, $data)</div><div class="line">    &#123;</div><div class="line">        echo &quot;Task &#123;$task_id&#125; finish\n&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /** 推送报错邮件</div><div class="line">     * @param $param</div><div class="line">     */</div><div class="line">    public function sendErrorToEmail($param)</div><div class="line">    &#123;</div><div class="line">        if(!empty($param[&apos;category&apos;]) &amp;&amp; !empty($param[&apos;level&apos;]) &amp;&amp; !empty($param[&apos;message&apos;]) &amp;&amp; !empty($param[&apos;prefix&apos;])) &#123;</div><div class="line">            Chayou::sendEmail(&apos;web-error&apos;,</div><div class="line">                [&apos;category&apos; =&gt; $param[&apos;category&apos;], &apos;level&apos; =&gt; $param[&apos;level&apos;], &apos;message&apos; =&gt; $param[&apos;message&apos;],</div><div class="line">                    &apos;prefix&apos; =&gt; $param[&apos;prefix&apos;]], Yii::$app-&gt;params[&apos;adminEmail&apos;], &apos;系统报警:&apos; . $param[&apos;category&apos;]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /** 插入mongodb日志库</div><div class="line">     * @param $param</div><div class="line">     */</div><div class="line">    public function insertLog($param)</div><div class="line">    &#123;</div><div class="line">        if(!empty($param[&apos;logCollection&apos;]) &amp;&amp; !empty($param[&apos;rows&apos;])) &#123;</div><div class="line">            Yii::$app-&gt;mongodb-&gt;getCollection($param[&apos;logCollection&apos;])-&gt;batchInsert($param[&apos;rows&apos;]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>4.yii2-mongodb官方扩展中的mongodb日志target是默认使用同步方式插入的,因此我必须继承这个target,然后修改为使用swoole的方式去发送任务到swoole_server上面.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">&apos;mongodb&apos; =&gt; [</div><div class="line">    &apos;class&apos; =&gt; &apos;\yii\mongodb\Connection&apos;,</div><div class="line">    &apos;dsn&apos; =&gt; &apos;mongodb://your name:your pass@your host:your port/your dbname&apos;,</div><div class="line">],</div><div class="line">...</div><div class="line">&apos;log&apos; =&gt; [</div><div class="line">    &apos;traceLevel&apos; =&gt; YII_DEBUG ? 3 : 0,</div><div class="line">    &apos;targets&apos; =&gt; [</div><div class="line">        [</div><div class="line">            &apos;class&apos; =&gt; &apos;common\components\MongoDbTarget&apos;,</div><div class="line">            &apos;logCollection&apos; =&gt; &apos;error_logs&apos;,</div><div class="line">            &apos;levels&apos; =&gt; [&apos;error&apos;],</div><div class="line">        ],</div><div class="line">    ],</div><div class="line">],</div><div class="line">...</div><div class="line">// swoole客服端链接server的配置</div><div class="line">&apos;swooleTaskClient&apos; =&gt; [</div><div class="line">    &apos;class&apos; =&gt; &apos;common\helpers\SwooleTaskClient&apos;,</div><div class="line">    &apos;host&apos; =&gt; &apos;112.74.***.***&apos;,    // server端的ip,本机可以使用127.0.0.1</div><div class="line">    &apos;port&apos; =&gt; 9501</div><div class="line">],</div></pre></td></tr></table></figure>
+<p>下面是swooleTaskClient的代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">class SwooleTaskClient extends Component</div><div class="line">&#123;</div><div class="line">    /**</div><div class="line">     * @var</div><div class="line">     */</div><div class="line">    public $client;</div><div class="line">    /**</div><div class="line">     * @var string 地址</div><div class="line">     */</div><div class="line">    public $host;</div><div class="line">    /**</div><div class="line">     * @var int 端口</div><div class="line">     */</div><div class="line">    public $port;</div><div class="line"></div><div class="line">    public function init()</div><div class="line">    &#123;</div><div class="line">        $this-&gt;client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);</div><div class="line">        $this-&gt;client-&gt;connect($this-&gt;host, $this-&gt;port);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /** Swoole Client发送</div><div class="line">     * @param $data</div><div class="line">     */</div><div class="line">    public function send($data)</div><div class="line">    &#123;</div><div class="line">        $this-&gt;client-&gt;send($data);</div><div class="line">        $this-&gt;client-&gt;close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面是common\components\MongoDbTarget的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">class MongoDbTarget extends BaseMongoDbTarget</div><div class="line">&#123;</div><div class="line">    /**</div><div class="line">     * Stores log messages to MongoDB collection.</div><div class="line">     */</div><div class="line">    public function export()</div><div class="line">    &#123;</div><div class="line">        /* @var SwooleTaskClient $swooleTaskClient */</div><div class="line">        $swooleTaskClient = Yii::$app-&gt;swooleTaskClient;</div><div class="line">        $rows = [];</div><div class="line">        foreach ($this-&gt;messages as $message) &#123;</div><div class="line">            list($text, $level, $category, $timestamp) = $message;</div><div class="line">            $resultMsg = $this-&gt;formatMessage($message);</div><div class="line"></div><div class="line">            // 只记录严重错误和500的错误</div><div class="line">            if($level &lt;= Logger::LEVEL_ERROR &amp;&amp; Yii::$app-&gt;response-&gt;statusCode == 500) &#123;</div><div class="line">                $rows[] = [</div><div class="line">                    &apos;level&apos; =&gt; $level,</div><div class="line">                    &apos;category&apos; =&gt; $category,</div><div class="line">                    &apos;log_time&apos; =&gt; $timestamp,</div><div class="line">                    &apos;prefix&apos; =&gt; $this-&gt;getMessagePrefix($message),</div><div class="line">                    &apos;message&apos; =&gt; $resultMsg,</div><div class="line">                ];</div><div class="line"></div><div class="line">                // 500错误直接报警，目前使用邮箱推送</div><div class="line">                if (YII_ENV == &apos;prod&apos;) &#123;</div><div class="line">                    $swooleTaskClient-&gt;send(serialize(</div><div class="line">                            [&apos;action&apos; =&gt; &apos;sendErrorToEmail&apos;, &apos;category&apos; =&gt; $category, &apos;level&apos; =&gt; $level, &apos;message&apos; =&gt; VarDumper::dumpAsString($resultMsg, 10, true),</div><div class="line">                                &apos;prefix&apos; =&gt; $this-&gt;getMessagePrefix($message)]) . &quot;\r\n\r\n&quot;);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        $swooleTaskClient-&gt;send(serialize(</div><div class="line">            [&apos;action&apos; =&gt; &apos;insertLog&apos;, &apos;rows&apos; =&gt; $rows, &apos;logCollection&apos; =&gt; $this-&gt;logCollection]) .&quot;\r\n\r\n&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public function formatMessage($message)</div><div class="line">    &#123;</div><div class="line">        list($text, $level, $category, $timestamp) = $message;</div><div class="line">        if (!is_string($text)) &#123;</div><div class="line">            // exceptions may not be serializable if in the call stack somewhere is a Closure</div><div class="line">            if ($text instanceof \Throwable || $text instanceof \Exception) &#123;</div><div class="line">                $text = (string) $text;</div><div class="line">            &#125; else &#123;</div><div class="line">                $text = VarDumper::export($text);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        $traces = [];</div><div class="line">        if (isset($message[4])) &#123;</div><div class="line">            foreach ($message[4] as $trace) &#123;</div><div class="line">                $traces[] = &quot;in &#123;$trace[&apos;file&apos;]&#125;:&#123;$trace[&apos;line&apos;]&#125;&quot;;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return $text</div><div class="line">        . (empty($traces) ? &apos;&apos; : &quot;\n    &quot; . implode(&quot;\n    &quot;, $traces));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到,在mongodbTarget这个类中,使用了swooleTaskClient去发送一段序列化的数据到server上面,然后server根据不同的action执行对应的方法,这里要主要一个坑就是,<br>由于我是foreach里面去send任务的,因从swoole可能会认为你这个不是分段发送的,而是合在一起发送的,解决方式就是用一个特定的分割符号去告知server,这是多次发送,而不是合并发送<br>具体可以参考我这篇博文:<a href="http://smartyphp.info/2016/09/09/swoole-task-send.html" target="_blank" rel="external">关于swoole的taks，多次send会出现包合并发送的情况</a></p>
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>这个改动已经更新到线上了,经过一段时间的观察,效果还是不错的,对于高并发的日志插入已经不是任何问题了,异步大法好~后期一些耗时操作的优化也可以使用类似的办法,使用swoole或者<br>消息队列的方式去解耦,去减轻并发带来的压力.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/27/2016-09-27-miao-sha-gou-si-1/" rel="next" title="商城秒杀系统构思系列（一）--超卖的解决方案">
+                <i class="fa fa-chevron-left"></i> 商城秒杀系统构思系列（一）--超卖的解决方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/19/2016-10-17-redis-bitmap-active-user/" rel="prev" title="使用Redis的bitmap来优雅地实现统计活跃用户数">
+                使用Redis的bitmap来优雅地实现统计活跃用户数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#起因"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拆出来"><span class="nav-number">2.</span> <span class="nav-text">拆出来</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异步写入"><span class="nav-number">3.</span> <span class="nav-text">异步写入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#swoole的task介绍"><span class="nav-number">4.</span> <span class="nav-text">swoole的task介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实施"><span class="nav-number">5.</span> <span class="nav-text">实施</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#效果"><span class="nav-number">6.</span> <span class="nav-text">效果</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="150" height="300" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: -20px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/z16/z16.model.json",0.5)</script>
+  
+</body>
+</html>

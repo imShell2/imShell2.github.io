@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近在看&amp;lt;&amp;gt;一书来学习设计模式,不得不说这本书相比于比较枯燥难懂的 GOF 出产的设计模式容易理解得多,书中使用了很多有趣的生活例子和插图来解释一个个看似难懂的设计模式,让我对设计模式有了更深一层的理解,因此也推荐大家去阅读一下. 在花了一个月去阅读完这本书之后,我对设计模式充满了热情,于是逐渐开始用于工作和自己的项目中去.比如我们公司的 app 的下单逻辑,下单有多种渠道(网页/ap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对设计模式的一些思考">
+<meta property="og:url" content="http://yoursite.com/2017/03/19/2017-03-18-pattern/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="最近在看&amp;lt;&amp;gt;一书来学习设计模式,不得不说这本书相比于比较枯燥难懂的 GOF 出产的设计模式容易理解得多,书中使用了很多有趣的生活例子和插图来解释一个个看似难懂的设计模式,让我对设计模式有了更深一层的理解,因此也推荐大家去阅读一下. 在花了一个月去阅读完这本书之后,我对设计模式充满了热情,于是逐渐开始用于工作和自己的项目中去.比如我们公司的 app 的下单逻辑,下单有多种渠道(网页/ap">
+<meta property="og:updated_time" content="2017-03-18T15:21:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="对设计模式的一些思考">
+<meta name="twitter:description" content="最近在看&amp;lt;&amp;gt;一书来学习设计模式,不得不说这本书相比于比较枯燥难懂的 GOF 出产的设计模式容易理解得多,书中使用了很多有趣的生活例子和插图来解释一个个看似难懂的设计模式,让我对设计模式有了更深一层的理解,因此也推荐大家去阅读一下. 在花了一个月去阅读完这本书之后,我对设计模式充满了热情,于是逐渐开始用于工作和自己的项目中去.比如我们公司的 app 的下单逻辑,下单有多种渠道(网页/ap">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/19/2017-03-18-pattern/"/>
+
+
+
+
+
+  <title>对设计模式的一些思考 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/imshell"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/19/2017-03-18-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">对设计模式的一些思考</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-19T03:00:00+08:00">
+                2017-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近在看&lt;<head firs="" 设计模式="">&gt;一书来学习设计模式,不得不说这本书相比于比较枯燥难懂的 GOF 出产的设计模式容易理解得多,书中使用了很多有趣的生活例子和插图来解释一个个看似难懂的设计模式,让我对设计模式有了更深一层的理解,因此也推荐大家去阅读一下.</head></p>
+<p>在花了一个月去阅读完这本书之后,我对设计模式充满了热情,于是逐渐开始用于工作和自己的项目中去.比如我们公司的 app 的下单逻辑,下单有多种渠道(网页/app/微信商城),这个下单的过程是相同的,但是下单后的逻辑会略有不同,这个时候使用工厂模式去重构这段代码就最好不过了,经过一轮重构,代码变得更加优雅和容易维护,但缺点就是多了几个子类,但是这个代价是值得的.</p>
+<p>但是,设计模式也给我带来了一点麻烦,由于我对设计模式有点走火入魔,甚至一些很小的功能我也想去使用设计模式重构,但是由于缺乏单元测试的支持,导致线上一个老问题又重现,所幸的这并非是一个重要业务.</p>
+<p>由此我得出一些思考和感想,设计模式的”模式”其实并不重要,也就是说设计模式并不一定要是工厂模式/策略模式/单例模式等等,其实更应该领会的是它的原则和理念.</p>
+<h2 id="从一个例子去讲述设计模式的原则和理念"><a href="#从一个例子去讲述设计模式的原则和理念" class="headerlink" title="从一个例子去讲述设计模式的原则和理念"></a>从一个例子去讲述设计模式的原则和理念</h2><p>这个原则在书中第一章的策略模式就已经提及到了,滥用继承一直备受诟病,为什么呢?因为继承很不灵活,并且如果子类只是为了实现极少部分功能而去继承某个庞大臃肿的父类,开销和代价是很大的.下面用代码去看看这样做的区别(请大家忽视我的一些代码的业务逻辑,现实不会有这样奇怪的逻辑的):</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 订单商品商品</span></div><div class="line">    <span class="keyword">public</span> $goodsNum;</div><div class="line"></div><div class="line">    <span class="keyword">abstract</span>  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPackets</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashback</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 复写领取红包,app 下单可以领取20元红包</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPackets</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="comment">// 领取了20元</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 复写优惠减免,下单2件才能返现</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashback</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;goodsNum &gt; <span class="number">2</span>) &#123;</div><div class="line">            <span class="comment">// 减免</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 网页下单不允许领取红包,但是必须继承父类抽象方法</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPackets</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 复写优惠返现,下单3件才能返现</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashback</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;goodsNum &gt; <span class="number">3</span>) &#123;</div><div class="line">            <span class="comment">// 减免</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WechatOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 这里要下单4件才能领取红包</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPackets</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;goodsNum &gt; <span class="number">4</span>) &#123;</div><div class="line">            <span class="comment">// 领了30元</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 微信下单不能返现,但是必须实现父类抽象方法</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashback</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">createOrder</span><span class="params">($type)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        $creator = <span class="keyword">null</span>;</div><div class="line">        </div><div class="line">        <span class="keyword">switch</span> ($type) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="string">'App'</span>:</div><div class="line">                $creator = <span class="keyword">new</span> AppOrderCreator();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">'Web'</span>:</div><div class="line">                $creator = <span class="keyword">new</span> WebOrderCreator();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">'Wechat'</span>:</div><div class="line">                $creator = <span class="keyword">new</span> WechatOrderCreator();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 领取红包</span></div><div class="line">        $creator-&gt;getRedPackets();</div><div class="line">        <span class="comment">// 下单...</span></div><div class="line">        <span class="comment">// 返现</span></div><div class="line">        $creator-&gt;cashback();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">$client = <span class="keyword">new</span> Client();</div><div class="line">$client-&gt;createOrder(<span class="string">'App'</span>);</div><div class="line">$client-&gt;createOrder(<span class="string">'Web'</span>);</div><div class="line">$client-&gt;createOrder(<span class="string">'Wechat'</span>);</div></pre></td></tr></table></figure>
+<p>这里到底有哪些不符合设计原则的地方呢?</p>
+<p>1.滥用继承.前面看到,app 下单和 wechat 下单都能领取红包,web 不能,但是为了继承父类,不得不实现一个空方法(不灵活)</p>
+<p>2.违反”开闭”原则.在客户端 <code>Client</code> 类中,通过 switch 去判断 type 是那种下单类型,假如我现在多加一种 <code>YouzanOrderCreator</code>,那么我就不得不去判断 type 等于”Youzan”就去创建<code>YouzanOrderCreator</code>,如果类型变多,那么判断逻辑将会十分臃肿.同时,如果我某天想把 App 下单时候领取红包的逻辑换成 Wechat 下单时候领取红包的逻辑,那么我不得不去 <code>AppOrderCreator</code> 去修改代码.</p>
+<p>3.针对具体编程,而非接口.根据 type 去判断实现某个子类,这样做除了增加臃肿而难看的分支判断之外,还会可能造成类型安全,比如我传一个”hack”字符串进来,这个 <code>Client</code> 就直接崩了.</p>
+<p>下面是重构后的代码:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">// 抽象领取红包行为父类</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">GetRedPacketsBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 持有一个宿主</span></div><div class="line">    <span class="keyword">public</span> $owner;</div><div class="line">    </div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(OrderCreator $creator)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;owner = $creator;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// App 领取红包行为</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppGetRedPacketsBehavior</span> <span class="keyword">extends</span> <span class="title">GetRedPacketsBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="comment">// 领取 App红包</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//  微信 领取红包行为</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WechatGetRedPacketsBehavior</span> <span class="keyword">extends</span> <span class="title">GetRedPacketsBehavior</span> </span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;owner-&gt;goodsNum &gt; <span class="number">4</span>) &#123;</div><div class="line">            <span class="comment">// 领取微信红包</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//  空领红包行为</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotGetRedPacketsBehavior</span> <span class="keyword">extends</span> <span class="title">GetRedPacketsBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="comment">// 啥也不做</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 抽象返现行为父类</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">CashbackBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(OrderCreator $creator)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;owner = $creator;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">back</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// App 下单返现类</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppCashbackBehavior</span> <span class="keyword">extends</span> <span class="title">CashbackBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">back</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;owner-&gt;goodsNum &gt; <span class="number">2</span>) &#123;</div><div class="line">            <span class="comment">// App减免</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 网页 下单返现类</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebCashbackBehavior</span> <span class="keyword">extends</span> <span class="title">CashbackBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 复写优惠返现,下单3件才能返现</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">back</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;owner-&gt;goodsNum &gt; <span class="number">3</span>) &#123;</div><div class="line">            <span class="comment">// 网页减免</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//  空返现行为</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoneCashbackBehavior</span> <span class="keyword">extends</span> <span class="title">CashbackBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">back</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="comment">// 啥也不做</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 订单商品商品</span></div><div class="line">    <span class="keyword">public</span> $goodsNum;</div><div class="line">    <span class="keyword">public</span> $getRedpacketBehavior;</div><div class="line">    <span class="keyword">public</span> $cashbackBehavior;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;getRedpacketBehavior = <span class="keyword">new</span> NotGetRedPacketsBehavior(<span class="keyword">$this</span>);</div><div class="line">        <span class="keyword">$this</span>-&gt;cashbackBehavior = <span class="keyword">new</span> NoneCashbackBehavior(<span class="keyword">$this</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setGetRedPacketBehavior</span><span class="params">(GetRedPacketsBehavior $behavior)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;getRedpacketBehavior = $behavior;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setCashbackBehavior</span><span class="params">(CashbackBehavior $behavior)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;cashbackBehavior = $behavior;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPacket</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;getRedpacketBehavior-&gt;get();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashBack</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;cashbackBehavior-&gt;back();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WechatOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">createOrder</span><span class="params">(OrderCreator $creator)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        $creator-&gt;getRedPacket();</div><div class="line">        <span class="comment">// 下单</span></div><div class="line">        $creator-&gt;cashBack();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">$client = <span class="keyword">new</span> Client();</div><div class="line"></div><div class="line"><span class="comment">// App 下单</span></div><div class="line">$app = <span class="keyword">new</span> AppOrderCreator();</div><div class="line">$app-&gt;setGetRedPacketBehavior(<span class="keyword">new</span> AppGetRedPacketsBehavior($app));</div><div class="line">$app-&gt;setCashbackBehavior(<span class="keyword">new</span> AppCashbackBehavior($app));</div><div class="line">$client-&gt;createOrder($app);</div><div class="line"></div><div class="line"><span class="comment">// Web 下单</span></div><div class="line">$web = <span class="keyword">new</span> WebOrderCreator();</div><div class="line">$web-&gt;setCashbackBehavior(<span class="keyword">new</span> WebCashbackBehavior($web));</div><div class="line">$client-&gt;createOrder($web);</div><div class="line"></div><div class="line"><span class="comment">// Wechat 下单</span></div><div class="line">$wechat = <span class="keyword">new</span> WechatOrderCreator();</div><div class="line">$wechat-&gt;setGetRedPacketBehavior(<span class="keyword">new</span> WechatGetRedPacketsBehavior($wechat));</div><div class="line">$client-&gt;createOrder($wechat);</div></pre></td></tr></table></figure>
+<p>重构后的代码,到底有什么优点?</p>
+<p>1.符合”少用继承,多用组合”的原则.由于领取红包和返现其实都是下单的额外行为,如果放在下单父类,那么所有子类都要继承或实现它,但并非所有子类都需要的,因此我把这两种行为拆分成独立的类,并且组成一个继承体系,每个行为子类都包含一个逻辑方法,我们的下单子类只要通过<code>setCashbackBehavior</code>和<code>setGetRedPacketBehavior</code>方法来设置特定的返现和领取红包行为.假如不需要,就不去调用这个方法.</p>
+<p>2.符合”针对接口编程”的原则.在重构后的代码,我把 <code>Client</code> 类的<code>createOrder</code>方法的参数改成了<code>OrderCreator $creator</code>这样做的好处是:第一,能够解决类型安全问题.第二,去掉了臃肿的 switch 分支,这样以后无论新增多少下单子类,我都不需要修改Client 的代码.</p>
+<p>3.符合”对扩展开放,对修改关闭”原则.像上面一点说了,<code>createOrder</code>使用<code>OrderCreator $creator</code>作为参数,即使后面新增多少下单子类都是不需要修Client 代码的,同时行为的剥离能够让下单子类拥有运行时改变行为的能力,比如我们 AppOrderCreator的返现逻辑需要改成 web 下单的返现逻辑,只需要修改一行代码<code>$app-&gt;setGetRedPacketBehavior(new WebCashbackBehavior($app));</code>就能在运行时修改行为了,其中不需要动到<code>AppOrderCreator</code>的一行代码.</p>
+<p>尽管优点很多,但是缺点也是有的,比如我们维护的类变得更多更细了,但是这在于一个大项目来说并不算什么,但是放在一个小型并且不会经常扩展的项目,这种做法其实没必要的.</p>
+<p>设计模式更多是提供思想,而非具体的做法和规范,很多时候千万不要为了设计模式而设计模式,这很容易会把原来就没什么问题的代码搞得更加乱七八糟和难以维护,设计模式更应该作为一种思想来指导我们写出低耦合和高内聚的代码.上面代码和逻辑可能还存在问题,希望各位能够给出更多的指点和修正,同时也极力推荐各位阅读&lt;<head first="" 设计模式="">&gt;~</head></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/19/2017-03-18-godep-first-try/" rel="next" title="折腾了一下午的 golang 第三方包管理工具---godep">
+                <i class="fa fa-chevron-left"></i> 折腾了一下午的 golang 第三方包管理工具---godep
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/19/2017-06-04-gcc-parse/" rel="prev" title="gcc 编译的四个阶段">
+                gcc 编译的四个阶段 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#从一个例子去讲述设计模式的原则和理念"><span class="nav-number">1.</span> <span class="nav-text">从一个例子去讲述设计模式的原则和理念</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="150" height="300" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: -20px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/z16/z16.model.json",0.5)</script>
+  
+</body>
+</html>

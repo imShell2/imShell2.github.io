@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="事件起因前两天,产品经理找到我,告知我商城后台的订单导出不了,会报500错误,于是找到运维打开日志查看,结果是”out of memory”,也就是内存溢出.但是一看数据,才2063条!按照道理来说,2000多条数据导出根本不是个事情,但是内存占用居然去到300多400mb,这肯定是不正常的. 排查由于这个后台的代码本身写得就不怎么行,原作者的水平有点不敢恭维,打开代码看了一下,第一眼能察觉到就是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="填坑:订单导出内存溢出故障排查与解决">
+<meta property="og:url" content="http://yoursite.com/2016/10/19/2016-10-28-paicha-daochu-neicun-yichun-guzhang/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="事件起因前两天,产品经理找到我,告知我商城后台的订单导出不了,会报500错误,于是找到运维打开日志查看,结果是”out of memory”,也就是内存溢出.但是一看数据,才2063条!按照道理来说,2000多条数据导出根本不是个事情,但是内存占用居然去到300多400mb,这肯定是不正常的. 排查由于这个后台的代码本身写得就不怎么行,原作者的水平有点不敢恭维,打开代码看了一下,第一眼能察觉到就是">
+<meta property="og:updated_time" content="2016-10-27T16:35:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="填坑:订单导出内存溢出故障排查与解决">
+<meta name="twitter:description" content="事件起因前两天,产品经理找到我,告知我商城后台的订单导出不了,会报500错误,于是找到运维打开日志查看,结果是”out of memory”,也就是内存溢出.但是一看数据,才2063条!按照道理来说,2000多条数据导出根本不是个事情,但是内存占用居然去到300多400mb,这肯定是不正常的. 排查由于这个后台的代码本身写得就不怎么行,原作者的水平有点不敢恭维,打开代码看了一下,第一眼能察觉到就是">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/19/2016-10-28-paicha-daochu-neicun-yichun-guzhang/"/>
+
+
+
+
+
+  <title>填坑:订单导出内存溢出故障排查与解决 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/imshell"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/19/2016-10-28-paicha-daochu-neicun-yichun-guzhang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">填坑:订单导出内存溢出故障排查与解决</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-19T04:38:35+08:00">
+                2016-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="事件起因"><a href="#事件起因" class="headerlink" title="事件起因"></a>事件起因</h1><p>前两天,产品经理找到我,告知我商城后台的订单导出不了,会报500错误,于是找到运维打开日志查看,结果是”out of memory”,也就是内存溢出.但是一看数据,才2063条!按照道理来说,2000多条数据导出根本不是个事情,但是内存占用居然去到300多400mb,这肯定是不正常的.</p>
+<h1 id="排查"><a href="#排查" class="headerlink" title="排查"></a>排查</h1><p>由于这个后台的代码本身写得就不怎么行,原作者的水平有点不敢恭维,打开代码看了一下,第一眼能察觉到就是,数组太大了.这个导出几乎所有的查询都是select所有字段的,有些表,比如子订单表就有十多二十个字段,那么这个数组就会有十多二十多个索引下表,这对于内存来说简直就是一种浪费,因为并非所有字段都是拿来查询的.因此,第一步就是优化sql,只去select有用到的字段.</p>
+<p>第一步优化过后,我知道这个事情还是没有解决的,遇到内存过大,一般来说都是会把<figure class="highlight plain"><figcaption><span>'1204M')```我这里也设置了,但是这个办法只是临时解决的,假如要导更大的数据呢?不可能把所有内存都给这个导出,那样的话会影响到其他的服务的,所以我们还是先从根源去优化这个导出的数组过大的问题.</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">于是我开始第二步的查找.由于我们平台日后要实现微服务和平台化,因此我们的规范就是尽可能不去链表.这样的话,比如我要查订单123456的商品id为10的对应的商品名称,我就要先把这个订单查出来,然后把其```goods_id```放进商品查询的sql里面,原来的代码里面,是相当于一次把所有子订单拿出来,然后在在查商品的sql里面 ```in(goods_id)``` .这样的方法同样用来查对应买家名字,对应的折扣优惠券等等.这会造成一个十分数组瞬间把内存压垮.找到这个问题所在后,我的解决方案就是批查询处理.下面简单展示下伪代码</div><div class="line"></div><div class="line">```php</div><div class="line">$offset = 0;</div><div class="line">while(($ret = $query-&gt;offset($offset)-&gt;limit(500)-&gt;asArray()-&gt;all)) &#123;</div><div class="line">  // 处理逻辑,或查询商品名称/买家名称等</div><div class="line">  $data += $ret;</div><div class="line">  // 处理完毕后</div><div class="line">  $offset++;</div><div class="line">  </div><div class="line">  fputcsv($data);</div><div class="line">  .....</div><div class="line">  uset($data);  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的代码很简单,就是把原来一次查出所有改为批量查出,这样的好处就是,能够不用一次把所有数据加载到内存里面,但是代价也很明显,就是会降低性能,因此分开了好几次去查询,但是我觉得导出数据的功能,可靠性 &gt; 性能,当然这里本身的性能也是有问题的,毕竟要查那么多表,即使几千条数据也是一个挺耗时的操作,如果后期性能太低再去另寻办法.</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>简单的总结一下,以后做导出,特别是数据量的导出应该注意的问题:</p>
+<ol>
+<li>sql尽量的优化,除了加索引外,还应该尽量不去查询所有的字段,只去查询有用的字段.</li>
+<li>分批处理数据,数据量太大,不要一次把所有数据拿出来,这会造成内存崩溃,并且数据库的压力也会很大.</li>
+<li>把不用的大变量uset掉,节约内存.</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/19/2016-10-17-redis-bitmap-active-user/" rel="next" title="使用Redis的bitmap来优雅地实现统计活跃用户数">
+                <i class="fa fa-chevron-left"></i> 使用Redis的bitmap来优雅地实现统计活跃用户数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/12/2016-12-12-redis-zset-sort/" rel="prev" title="利用redis的有序集合来快速排序">
+                利用redis的有序集合来快速排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#事件起因"><span class="nav-number">1.</span> <span class="nav-text">事件起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#排查"><span class="nav-number">2.</span> <span class="nav-text">排查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="150" height="300" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: -20px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/z16/z16.model.json",0.5)</script>
+  
+</body>
+</html>
