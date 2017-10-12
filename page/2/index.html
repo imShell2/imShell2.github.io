@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -45,6 +45,50 @@
 
 
 
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.css.network/css?family=Lato:300,300italic,400,400italic,700,700italic|Lato:300,300italic,400,400italic,700,700italic|Merriweather:300,300italic,400,400italic,700,700italic|Iosevka:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
@@ -56,10 +100,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/huojian.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/huojian.png?v=5.1.3">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
@@ -80,11 +124,12 @@
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="CodeWorld">
 <meta property="og:url" content="http://yoursite.com/page/2/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="CodeWorld">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="CodeWorld">
 
 
 
@@ -100,7 +145,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -120,7 +165,7 @@
 
 
 
-  <title>Hexo</title>
+  <title>CodeWorld</title>
   
 
 
@@ -132,7 +177,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -151,7 +196,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Hexo</span>
+        <span class="site-title">CodeWorld</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -181,7 +226,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首页
           </a>
         </li>
       
@@ -191,7 +236,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -231,13 +286,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/17/2016-09-17-simple-html-dom-note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -257,9 +312,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-17T16:23:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-17T16:23:00+08:00">
                 2016-09-17
               </time>
             
@@ -299,76 +354,17 @@
       
         
           
-            <p>1、preg_match第四个参数设置为PREG_SET_ORDER的作用<br>第四个参数设置对于组合数据非常有用，比如说我从下面代码匹配出对应的网址和搜索引擎名字</p>
-<pre><code>&lt;?php 
-$str = &apos;&lt;a href=&quot;http://www.baidu.com/&quot;&gt;百度&lt;/a&gt;&lt;a href=&quot;http://www.google.com/&quot;&gt;谷歌&lt;/a&gt;&lt;a href=&quot;http://www.caiguai.net/&quot;&gt;怪手论坛&lt;/a&gt;&apos;;
-
-// 正常的使用默认PREG_PATTERN_ORDER
-preg_match_all(&apos;|&lt;a href=&quot;(.*?)&quot;&gt;(.*?)&lt;/a&gt;|&apos;, $str, $matches_pattern, PREG_PATTERN_ORDER);
-
-// output
-/**
-Array
-(
-    [0] =&gt; Array
-        (
-            [0] =&gt; &lt;a href=&quot;http://www.baidu.com/&quot;&gt;百度&lt;/a&gt;
-            [1] =&gt; &lt;a href=&quot;http://www.google.com/&quot;&gt;谷歌&lt;/a&gt;
-            [2] =&gt; &lt;a href=&quot;http://www.caiguai.net/&quot;&gt;怪手论坛&lt;/a&gt;
-        )
-
-    [1] =&gt; Array
-        (
-            [0] =&gt; http://www.baidu.com/
-            [1] =&gt; http://www.google.com/
-            [2] =&gt; http://www.caiguai.net/
-        )
-
-    [2] =&gt; Array
-        (
-            [0] =&gt; 百度
-            [1] =&gt; 谷歌
-            [2] =&gt; 怪手论坛
-        )
-
-)
-**/
-//这个数组的组合是不方便的，首先得遍历[1]的链接，然后再拼接[2]中对应的数组名字。
-
-// 那么这次使用PREG_SET_ORDER来试试
-preg_match_all(&apos;|&lt;a href=&quot;(.*?)&quot;&gt;(.*?)&lt;/a&gt;|&apos;, $str, $matches_pattern, PREG_SET_ORDER);
-
-//output
-/**
-Array
-(
-    [0] =&gt; Array
-        (
-            [0] =&gt; &lt;a href=&quot;http://www.baidu.com/&quot;&gt;百度&lt;/a&gt;
-            [1] =&gt; http://www.baidu.com/
-            [2] =&gt; 百度
-        )
-
-    [1] =&gt; Array
-        (
-            [0] =&gt; &lt;a href=&quot;http://www.google.com/&quot;&gt;谷歌&lt;/a&gt;
-            [1] =&gt; http://www.google.com/
-            [2] =&gt; 谷歌
-        )
-
-    [2] =&gt; Array
-        (
-            [0] =&gt; &lt;a href=&quot;http://www.caiguai.net/&quot;&gt;怪手论坛&lt;/a&gt;
-            [1] =&gt; http://www.caiguai.net/
-            [2] =&gt; 怪手论坛
-        )
-
-)
-**/
-
-// 由此看到这样去匹配就容易多了。
-</code></pre>
-          
+          1、preg_match第四个参数设置为PREG_SET_ORDER的作用第四个参数设置对于组合数据非常有用，比如说我从下面代码匹配出对应的网址和搜索引擎名字
+&lt;?php 
+$str = &apos;&lt;a href=&quot;http://www.baidu.com/&quot;&gt
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/17/2016-09-17-simple-html-dom-note/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -418,13 +414,13 @@ Array
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/10/2016-09-10-yii-bind-yar/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -444,9 +440,9 @@ Array
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-10T16:23:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-10T16:23:00+08:00">
                 2016-09-10
               </time>
             
@@ -486,11 +482,16 @@ Array
       
         
           
-            <p>最近这些天想搞一个微服务的博客来练练手,顺便把一些知识给应用上去,在rpc通信框架上面使用了yar框架,于是对着文档写了个demo:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public function actionLogin()</div><div class="line">&#123;</div><div class="line">    $client = new \Yar_Client(&apos;http://www.msblog.local/site/test&apos;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">public function actionTest()</div><div class="line">&#123;</div><div class="line">    $server = new \Yar_Server(new AbcService());</div><div class="line">    $server-&gt;handle();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>结果是报错:500,yar的文档和社区实在有点少,因此只能不断去排除和调试,但是当我把server直接放在web文件下,代码改成<code>$client = new \Yar_Client(&#39;http://www.msblog.local/server.php&#39;);</code>就<br>又可以使用了,于是就定位到一个点上了:Yii的路由和控制器.无奈之下去查了以下debug,发现rpc居然是用post去请求<code>http://www.msblog.local/site/test</code>的,那么问题就找到了,yii是默认开启了csrf验证的,<br>只要请求是post,如果不带上csrf参数就会被拦截掉,这个坑我已经踩过好多遍了— -!包括以前的支付宝和微信调试也是…没想到这次还是,最后禁用掉csrf,一切终于ok了.</p>
-
-          
+          最近这些天想搞一个微服务的博客来练练手,顺便把一些知识给应用上去,在rpc通信框架上面使用了yar框架,于是对着文档写了个demo:
+12345678910public function actionLogin()&#123;    $client = new \Yar_Client(&apos;h
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/10/2016-09-10-yii-bind-yar/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -540,13 +541,13 @@ Array
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/09/2016-09-09-swoole-task-send/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -566,9 +567,9 @@ Array
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-09T16:23:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-09T16:23:00+08:00">
                 2016-09-09
               </time>
             
@@ -608,9 +609,16 @@ Array
       
         
           
-            <p>解决方式参考博文：<a href="http://rango.swoole.com/archives/464" target="_blank" rel="external">http://rango.swoole.com/archives/464</a><br>最后才用了EOF的方式来解决，分割符号随便定义，但要考虑好传送的文本是否具有分隔符</p>
+          解决方式参考博文：http://rango.swoole.com/archives/464最后才用了EOF的方式来解决，分割符号随便定义，但要考虑好传送的文本是否具有分隔符
 
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/09/2016-09-09-swoole-task-send/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -660,13 +668,13 @@ Array
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/28/2016-08-08-install-rabbit-mq-in-centos6.5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -686,9 +694,9 @@ Array
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-28T21:25:35+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-28T21:25:35+08:00">
                 2016-08-28
               </time>
             
@@ -728,38 +736,19 @@ Array
       
         
           
-            <h1 id="1、安装rabbitmq"><a href="#1、安装rabbitmq" class="headerlink" title="1、安装rabbitmq"></a>1、安装rabbitmq</h1><p><a href="http://blog.csdn.net/feng4656/article/details/17371005" target="_blank" rel="external">http://blog.csdn.net/feng4656/article/details/17371005</a></p>
-<blockquote>
-<p>主要的坑：make install的时候一定要指明TARGET_DIR，SBIN_DIR，MAN_DIR</p>
-</blockquote>
-<h1 id="2、配置远程访问以及开启远程控制账号"><a href="#2、配置远程访问以及开启远程控制账号" class="headerlink" title="2、配置远程访问以及开启远程控制账号"></a>2、配置远程访问以及开启远程控制账号</h1><p>rabbitmq默认安装了web访问界面，可以管理mq的各种信息，但是为了安全起见只能在localhost上访问，若服务器没安装桌面端是无法管理的，因此必须配置能在远程管理控制。</p>
-<ol>
-<li>修改（不存在时增加）一个配置文件 /etc/rabbitmq/rabbitmq.config，添加配置</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">&#123;rabbit, [&#123;tcp_listeners, [5672]&#125;, &#123;loopback_users, [&quot;xyb&quot;]&#125;]&#125;</div><div class="line">].</div></pre></td></tr></table></figure>
-<p>代码的含义是添加了一个名为xyb的远端用户，但是还需要通过添加用户和权限才能使用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ cd /usr/lib/rabbitmq/bin/</div><div class="line"></div><div class="line">$ sudo rabbitmqctl add_user asdf 123456</div><div class="line"></div><div class="line">$ sudo rabbitmqctl set_user_tags asdf administrator   </div><div class="line"></div><div class="line">$ sudo rabbitmqctl set_permissions -p / asdf &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</div></pre></td></tr></table></figure>
-<p>最后开放服务器的5672和15672端口就ok了。访问方式是<a href="http://[server_ip]:15672" target="_blank" rel="external">http://[server_ip]:15672</a></p>
-<h1 id="3、安装php扩展amqp"><a href="#3、安装php扩展amqp" class="headerlink" title="3、安装php扩展amqp"></a>3、安装php扩展amqp</h1><p>这里使用的是源码安装，安装之前必须要先安装librabbitmq，否则confirure会报错。</p>
-<ol>
-<li>安装librabbitmq：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">    wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/</div><div class="line">    </div><div class="line">    rabbitmq-c-0.7.1.tar.gz</div><div class="line">    </div><div class="line">    tar zxf rabbitmq-c-0.7.1.tar.gz</div><div class="line">    </div><div class="line">    cd rabbitmq-c-0.7.1</div><div class="line">    </div><div class="line">    ./configure --prefix=/usr/local/rabbitmq-c-0.7.1</div><div class="line">    </div><div class="line">    make &amp;&amp; make install</div><div class="line">```            </div><div class="line"></div><div class="line">2. 安装ampq扩展</div></pre></td></tr></table></figure>
-<pre><code>wget https://pecl.php.net/get/amqp-1.6.1.tgz
+          1、安装rabbitmqhttp://blog.csdn.net/feng4656/article/details/17371005
 
-tar zxf amqp-1.6.1.tgz
+主要的坑：make install的时候一定要指明TARGET_DIR，SBIN_DIR，MAN_DIR
 
-cd amqp-1.6.1
-
-/usr/local/php/bin/phpize
-
-./configure --with-php-config=/usr/local/php/bin/php-config --with-amqp --with-librabbitmq-dir=/usr/local/rabbitmq-c-0.7.1
-
-make &amp;&amp; make install 
-</code></pre><p>```</p>
-<p>注意这里的-with-librabbitmq-dir必须是第一点中的librabbitmq位置。最后添加ampq.so到ext目录，再修改php.ini就可以了。</p>
-
-          
+2、配置远程访问以及开启远程控制账号rabbitmq默认
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/08/28/2016-08-08-install-rabbit-mq-in-centos6.5/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -809,13 +798,13 @@ make &amp;&amp; make install
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/13/2016-08-12-number-format-warning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -835,9 +824,9 @@ make &amp;&amp; make install
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-13T02:00:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-13T02:00:00+08:00">
                 2016-08-13
               </time>
             
@@ -877,13 +866,17 @@ make &amp;&amp; make install
       
         
           
-            <p>昨天调试微信支付接口的时候，发现微信下单时，支付的金额必须传一个数字，字符串会出错，比如string(4)”5030”，会出现错误。因此我就想着格式化成数字，并保留两位小数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$sumPrice = floatval(number_format($sumPrice, 2));</div></pre></td></tr></table></figure>
-<p>在调试低于10元以下的订单没任何问题，但是调试10元以上的订单就出bug了(因为微信下单api价格传参需要乘以100)，因此53元的订单就相当于传5030进去，然后奇怪的是，$sumPrice居然变成了5.00。后来打印了<figure class="highlight plain"><figcaption><span>2)```才知道，这个$sumPrice在floatval前变成了string(4)"5,300"，才发现number_format会对四位数以上的字符进行分割，查了手册，于是改成</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure></p>
-<p>$sumPrice = floatval(number_format($sumPrice, 2, ‘.’, ‘’));<br>```</p>
-<p>然后就ok了。</p>
-
-          
+          昨天调试微信支付接口的时候，发现微信下单时，支付的金额必须传一个数字，字符串会出错，比如string(4)”5030”，会出现错误。因此我就想着格式化成数字，并保留两位小数：
+1$sumPrice = floatval(number_format($sumPrice, 2));
+在调试低于10元以下
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/08/13/2016-08-12-number-format-warning/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -956,7 +949,7 @@ make &amp;&amp; make install
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-author-name" itemprop="name">imshell</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -968,7 +961,7 @@ make &amp;&amp; make install
                 <a href="/archives/">
               
                   <span class="site-state-item-count">15</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
@@ -1015,13 +1008,13 @@ make &amp;&amp; make install
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">imshell</span>
 
   
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
 
 
 
@@ -1029,7 +1022,7 @@ make &amp;&amp; make install
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
 
 
 
@@ -1184,21 +1177,7 @@ make &amp;&amp; make install
   
 
   
-  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
-  
-  
-    <script type="text/javascript" src="/live2d/script.js"></script>
-    <canvas id="live2dcanvas" width="150" height="300" class="live2d"></canvas>
-    <style>
-      #live2dcanvas {
-        position: fixed;
-        right: 0px;
-        z-index: 999;
-        pointer-events: none;
-        bottom: -20px;
-      }
-    </style>
-    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/z16/z16.model.json",0.5)</script>
+  <script type="text/javascript" src="http://obg6dzeur.bkt.clouddn.com/canvas-nest.js"></script>
   
 </body>
 </html>

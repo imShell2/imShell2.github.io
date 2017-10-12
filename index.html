@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -45,6 +45,50 @@
 
 
 
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.css.network/css?family=Lato:300,300italic,400,400italic,700,700italic|Lato:300,300italic,400,400italic,700,700italic|Merriweather:300,300italic,400,400italic,700,700italic|Iosevka:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
@@ -56,10 +100,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/huojian.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/huojian.png?v=5.1.3">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
@@ -80,11 +124,12 @@
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="CodeWorld">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="CodeWorld">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="CodeWorld">
 
 
 
@@ -100,7 +145,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -120,7 +165,7 @@
 
 
 
-  <title>Hexo</title>
+  <title>CodeWorld</title>
   
 
 
@@ -132,7 +177,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -151,7 +196,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Hexo</span>
+        <span class="site-title">CodeWorld</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -181,7 +226,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首页
           </a>
         </li>
       
@@ -191,7 +236,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -231,13 +286,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/19/2017-06-04-gcc-parse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -257,9 +312,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-19T03:00:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-19T03:00:00+08:00">
                 2017-03-19
               </time>
             
@@ -299,23 +354,17 @@
       
         
           
-            <p>开始翻起很早之前买的一本&lt;&lt;深入理解计算机系统&gt;&gt;第一章,由于此书属于深奥教材系列,因此也已经做好啃的准备,也借此写一些博文来加深对书的理解.<br>今天就已第一章节的 gcc 编译的四个阶段作为博文来简单分享下吧.</p>
-<p>首先,先贴出一段 c 写的hello world.</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="built_in">printf</span>(<span class="string">"hello world"</span>);</div><div class="line">  <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>通常写完这个程序之后,我们会把它另存为一个文本文件,例如:hello.c,然后执行</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; unix gcc -o hello hello.c</div></pre></td></tr></table></figure>
-<p>这将会在当前目录生成一个 hello 的二进制文件,执行 hello 将会输出”hello world”.那么这个 gcc 编译中间到底发生了什么呢?</p>
-<p>先来看看一张流程图:</p>
-<p><img src="http://obg6dzeur.bkt.clouddn.com/gcc%20%E7%BC%96%E8%AF%91C%20%E7%A8%8B%E5%BA%8F%E6%B5%81%E7%A8%8B%20%282%29.png" alt="gcc编译流程图"></p>
-<p>下面就来逐步分析一下这四个阶段:</p>
-<ol>
-<li><strong>预处理阶段</strong>:检索 hello.c 文件中以#开头的语句,比如#include,#define 等,并把对应的内容插入hello.c 文件中去.比如上面中的#include<stdio.h>就是告诉预处理器,请把 stdio.h 这个标准库的头文件的内容插入,最终得到一个名为 hello.i 的程序文件;</stdio.h></li>
-<li><strong>编译阶段</strong>:把 hello.i 的文件内容逐条通过编译器编译成汇编语言,汇编语言会以每一句文本来表示一句机器指令,最终得到的名字是 hello.s;</li>
-<li><strong>汇编阶段</strong>:把汇编语言逐条翻译成机器语言指令,此时会生成一个二进制文件 hello.o,这个文件是打开是一堆乱码,同时也被成为可重定向的目标程序;</li>
-<li><strong>链接阶段</strong>:最后一个阶段,就是使用链接器去合并我们 hello.c 中用到的函数的目标文件.比如我们上面的程序中使用了 printf 这个标准库函数,而这个 printf 函数本身存在一个名为 printf.o 的目标文件中,因此链接器会找到这个目标文件并与我们的 hello.c 进行合并,最后获得 hello 这个可执行的二进制程序</li>
-</ol>
-
-          
+          开始翻起很早之前买的一本&lt;&lt;深入理解计算机系统&gt;&gt;第一章,由于此书属于深奥教材系列,因此也已经做好啃的准备,也借此写一些博文来加深对书的理解.今天就已第一章节的 gcc 编译的四个阶段作为博文来简单分享下吧.
+首先,先贴出一段 c 写的hello world.
+123456#
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/19/2017-06-04-gcc-parse/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -365,13 +414,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/19/2017-03-18-pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -391,9 +440,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-19T03:00:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-19T03:00:00+08:00">
                 2017-03-19
               </time>
             
@@ -433,26 +482,16 @@
       
         
           
-            <p>最近在看&lt;<head firs="" 设计模式="">&gt;一书来学习设计模式,不得不说这本书相比于比较枯燥难懂的 GOF 出产的设计模式容易理解得多,书中使用了很多有趣的生活例子和插图来解释一个个看似难懂的设计模式,让我对设计模式有了更深一层的理解,因此也推荐大家去阅读一下.</head></p>
-<p>在花了一个月去阅读完这本书之后,我对设计模式充满了热情,于是逐渐开始用于工作和自己的项目中去.比如我们公司的 app 的下单逻辑,下单有多种渠道(网页/app/微信商城),这个下单的过程是相同的,但是下单后的逻辑会略有不同,这个时候使用工厂模式去重构这段代码就最好不过了,经过一轮重构,代码变得更加优雅和容易维护,但缺点就是多了几个子类,但是这个代价是值得的.</p>
-<p>但是,设计模式也给我带来了一点麻烦,由于我对设计模式有点走火入魔,甚至一些很小的功能我也想去使用设计模式重构,但是由于缺乏单元测试的支持,导致线上一个老问题又重现,所幸的这并非是一个重要业务.</p>
-<p>由此我得出一些思考和感想,设计模式的”模式”其实并不重要,也就是说设计模式并不一定要是工厂模式/策略模式/单例模式等等,其实更应该领会的是它的原则和理念.</p>
-<h2 id="从一个例子去讲述设计模式的原则和理念"><a href="#从一个例子去讲述设计模式的原则和理念" class="headerlink" title="从一个例子去讲述设计模式的原则和理念"></a>从一个例子去讲述设计模式的原则和理念</h2><p>这个原则在书中第一章的策略模式就已经提及到了,滥用继承一直备受诟病,为什么呢?因为继承很不灵活,并且如果子类只是为了实现极少部分功能而去继承某个庞大臃肿的父类,开销和代价是很大的.下面用代码去看看这样做的区别(请大家忽视我的一些代码的业务逻辑,现实不会有这样奇怪的逻辑的):</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 订单商品商品</span></div><div class="line">    <span class="keyword">public</span> $goodsNum;</div><div class="line"></div><div class="line">    <span class="keyword">abstract</span>  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPackets</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashback</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 复写领取红包,app 下单可以领取20元红包</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPackets</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="comment">// 领取了20元</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 复写优惠减免,下单2件才能返现</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashback</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;goodsNum &gt; <span class="number">2</span>) &#123;</div><div class="line">            <span class="comment">// 减免</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 网页下单不允许领取红包,但是必须继承父类抽象方法</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPackets</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 复写优惠返现,下单3件才能返现</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashback</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;goodsNum &gt; <span class="number">3</span>) &#123;</div><div class="line">            <span class="comment">// 减免</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WechatOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 这里要下单4件才能领取红包</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPackets</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;goodsNum &gt; <span class="number">4</span>) &#123;</div><div class="line">            <span class="comment">// 领了30元</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 微信下单不能返现,但是必须实现父类抽象方法</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashback</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">createOrder</span><span class="params">($type)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        $creator = <span class="keyword">null</span>;</div><div class="line">        </div><div class="line">        <span class="keyword">switch</span> ($type) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="string">'App'</span>:</div><div class="line">                $creator = <span class="keyword">new</span> AppOrderCreator();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">'Web'</span>:</div><div class="line">                $creator = <span class="keyword">new</span> WebOrderCreator();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">'Wechat'</span>:</div><div class="line">                $creator = <span class="keyword">new</span> WechatOrderCreator();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 领取红包</span></div><div class="line">        $creator-&gt;getRedPackets();</div><div class="line">        <span class="comment">// 下单...</span></div><div class="line">        <span class="comment">// 返现</span></div><div class="line">        $creator-&gt;cashback();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">$client = <span class="keyword">new</span> Client();</div><div class="line">$client-&gt;createOrder(<span class="string">'App'</span>);</div><div class="line">$client-&gt;createOrder(<span class="string">'Web'</span>);</div><div class="line">$client-&gt;createOrder(<span class="string">'Wechat'</span>);</div></pre></td></tr></table></figure>
-<p>这里到底有哪些不符合设计原则的地方呢?</p>
-<p>1.滥用继承.前面看到,app 下单和 wechat 下单都能领取红包,web 不能,但是为了继承父类,不得不实现一个空方法(不灵活)</p>
-<p>2.违反”开闭”原则.在客户端 <code>Client</code> 类中,通过 switch 去判断 type 是那种下单类型,假如我现在多加一种 <code>YouzanOrderCreator</code>,那么我就不得不去判断 type 等于”Youzan”就去创建<code>YouzanOrderCreator</code>,如果类型变多,那么判断逻辑将会十分臃肿.同时,如果我某天想把 App 下单时候领取红包的逻辑换成 Wechat 下单时候领取红包的逻辑,那么我不得不去 <code>AppOrderCreator</code> 去修改代码.</p>
-<p>3.针对具体编程,而非接口.根据 type 去判断实现某个子类,这样做除了增加臃肿而难看的分支判断之外,还会可能造成类型安全,比如我传一个”hack”字符串进来,这个 <code>Client</code> 就直接崩了.</p>
-<p>下面是重构后的代码:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">// 抽象领取红包行为父类</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">GetRedPacketsBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 持有一个宿主</span></div><div class="line">    <span class="keyword">public</span> $owner;</div><div class="line">    </div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(OrderCreator $creator)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;owner = $creator;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// App 领取红包行为</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppGetRedPacketsBehavior</span> <span class="keyword">extends</span> <span class="title">GetRedPacketsBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="comment">// 领取 App红包</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//  微信 领取红包行为</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WechatGetRedPacketsBehavior</span> <span class="keyword">extends</span> <span class="title">GetRedPacketsBehavior</span> </span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;owner-&gt;goodsNum &gt; <span class="number">4</span>) &#123;</div><div class="line">            <span class="comment">// 领取微信红包</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//  空领红包行为</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotGetRedPacketsBehavior</span> <span class="keyword">extends</span> <span class="title">GetRedPacketsBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="comment">// 啥也不做</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 抽象返现行为父类</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">CashbackBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(OrderCreator $creator)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;owner = $creator;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">back</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// App 下单返现类</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppCashbackBehavior</span> <span class="keyword">extends</span> <span class="title">CashbackBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">back</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;owner-&gt;goodsNum &gt; <span class="number">2</span>) &#123;</div><div class="line">            <span class="comment">// App减免</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 网页 下单返现类</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebCashbackBehavior</span> <span class="keyword">extends</span> <span class="title">CashbackBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 复写优惠返现,下单3件才能返现</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">back</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;owner-&gt;goodsNum &gt; <span class="number">3</span>) &#123;</div><div class="line">            <span class="comment">// 网页减免</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//  空返现行为</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoneCashbackBehavior</span> <span class="keyword">extends</span> <span class="title">CashbackBehavior</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">back</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="comment">// 啥也不做</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">// 订单商品商品</span></div><div class="line">    <span class="keyword">public</span> $goodsNum;</div><div class="line">    <span class="keyword">public</span> $getRedpacketBehavior;</div><div class="line">    <span class="keyword">public</span> $cashbackBehavior;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;getRedpacketBehavior = <span class="keyword">new</span> NotGetRedPacketsBehavior(<span class="keyword">$this</span>);</div><div class="line">        <span class="keyword">$this</span>-&gt;cashbackBehavior = <span class="keyword">new</span> NoneCashbackBehavior(<span class="keyword">$this</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setGetRedPacketBehavior</span><span class="params">(GetRedPacketsBehavior $behavior)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;getRedpacketBehavior = $behavior;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setCashbackBehavior</span><span class="params">(CashbackBehavior $behavior)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;cashbackBehavior = $behavior;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRedPacket</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;getRedpacketBehavior-&gt;get();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cashBack</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;cashbackBehavior-&gt;back();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WechatOrderCreator</span> <span class="keyword">extends</span> <span class="title">OrderCreator</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">createOrder</span><span class="params">(OrderCreator $creator)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        $creator-&gt;getRedPacket();</div><div class="line">        <span class="comment">// 下单</span></div><div class="line">        $creator-&gt;cashBack();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">$client = <span class="keyword">new</span> Client();</div><div class="line"></div><div class="line"><span class="comment">// App 下单</span></div><div class="line">$app = <span class="keyword">new</span> AppOrderCreator();</div><div class="line">$app-&gt;setGetRedPacketBehavior(<span class="keyword">new</span> AppGetRedPacketsBehavior($app));</div><div class="line">$app-&gt;setCashbackBehavior(<span class="keyword">new</span> AppCashbackBehavior($app));</div><div class="line">$client-&gt;createOrder($app);</div><div class="line"></div><div class="line"><span class="comment">// Web 下单</span></div><div class="line">$web = <span class="keyword">new</span> WebOrderCreator();</div><div class="line">$web-&gt;setCashbackBehavior(<span class="keyword">new</span> WebCashbackBehavior($web));</div><div class="line">$client-&gt;createOrder($web);</div><div class="line"></div><div class="line"><span class="comment">// Wechat 下单</span></div><div class="line">$wechat = <span class="keyword">new</span> WechatOrderCreator();</div><div class="line">$wechat-&gt;setGetRedPacketBehavior(<span class="keyword">new</span> WechatGetRedPacketsBehavior($wechat));</div><div class="line">$client-&gt;createOrder($wechat);</div></pre></td></tr></table></figure>
-<p>重构后的代码,到底有什么优点?</p>
-<p>1.符合”少用继承,多用组合”的原则.由于领取红包和返现其实都是下单的额外行为,如果放在下单父类,那么所有子类都要继承或实现它,但并非所有子类都需要的,因此我把这两种行为拆分成独立的类,并且组成一个继承体系,每个行为子类都包含一个逻辑方法,我们的下单子类只要通过<code>setCashbackBehavior</code>和<code>setGetRedPacketBehavior</code>方法来设置特定的返现和领取红包行为.假如不需要,就不去调用这个方法.</p>
-<p>2.符合”针对接口编程”的原则.在重构后的代码,我把 <code>Client</code> 类的<code>createOrder</code>方法的参数改成了<code>OrderCreator $creator</code>这样做的好处是:第一,能够解决类型安全问题.第二,去掉了臃肿的 switch 分支,这样以后无论新增多少下单子类,我都不需要修改Client 的代码.</p>
-<p>3.符合”对扩展开放,对修改关闭”原则.像上面一点说了,<code>createOrder</code>使用<code>OrderCreator $creator</code>作为参数,即使后面新增多少下单子类都是不需要修Client 代码的,同时行为的剥离能够让下单子类拥有运行时改变行为的能力,比如我们 AppOrderCreator的返现逻辑需要改成 web 下单的返现逻辑,只需要修改一行代码<code>$app-&gt;setGetRedPacketBehavior(new WebCashbackBehavior($app));</code>就能在运行时修改行为了,其中不需要动到<code>AppOrderCreator</code>的一行代码.</p>
-<p>尽管优点很多,但是缺点也是有的,比如我们维护的类变得更多更细了,但是这在于一个大项目来说并不算什么,但是放在一个小型并且不会经常扩展的项目,这种做法其实没必要的.</p>
-<p>设计模式更多是提供思想,而非具体的做法和规范,很多时候千万不要为了设计模式而设计模式,这很容易会把原来就没什么问题的代码搞得更加乱七八糟和难以维护,设计模式更应该作为一种思想来指导我们写出低耦合和高内聚的代码.上面代码和逻辑可能还存在问题,希望各位能够给出更多的指点和修正,同时也极力推荐各位阅读&lt;<head first="" 设计模式="">&gt;~</head></p>
-
-          
+          最近在看&lt;&lt; head firs 设计模式 &gt;&gt;一书来学习设计模式,不得不说这本书相比于比较枯燥难懂的 GOF 出产的设计模式容易理解得多,书中使用了很多有趣的生活例子和插图来解释一个个看似难懂的设计模式,让我对设计模式有了更深一层的理解,因此也推荐大家去阅读一下.
+在花了一
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/19/2017-03-18-pattern/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -502,13 +541,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/19/2017-03-18-godep-first-try/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -528,9 +567,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-19T03:00:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-19T03:00:00+08:00">
                 2017-03-19
               </time>
             
@@ -570,12 +609,15 @@
       
         
           
-            <p>由于 golang 的开发者把设计想得过度美好,导致 go 语言并没有自带特别强大的包依赖管理工具,不像 java 有 maven,php 有 composer,ruby 有 gem,go 的开发者只能自己动手造轮子,比如 <figure class="highlight plain"><figcaption><span>就是一个比较流行的包管理依赖方案.</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">godep 在社区上还是使用得比较热门的,尽然现在有 govendor/gb 等其他工具,但是还是没法撼动它的地位,比较有名的项目,如 docker 和 coreos 也是使用其作为包依赖管理工具.</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">这几天在开发一个政府网站文章爬虫需求,使用了第三方包`goquery`和`mysql`包来开发,同时需要使用 godep 来打包整个代码并`git clone`到正式服务器.</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">## 安装 godep</div><div class="line"></div><div class="line">安装方法很简单,一条命令即可解决:</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">`go get github.com/tools/godep`</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"> 其中`golang.org`的包可能被墙了,建议到`golangtc.org`去下载对应的包并放到对应的目录中.成功安装之后,在你的 GOPATH 中进入 bin 目录,会发现有一个名为`godep`的二进制文件,这个时候可以把路径加入系统 path 以方便操作.</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"> ## godep 之前的开发目录结构</div><div class="line"></div><div class="line"> ![113F03C0-D58E-4986-BE37-E84B29B332EA](http://static.qiziwang.net/A8764386-6042-4AE3-B400-973F1057CC6C.png)</div><div class="line"></div><div class="line">由于我的 gopath 是当前项目,所以这些第三方库会装在我的当前项目中,但是我们应该把第三方库放在专有的 gopath,我这里就懒得改了~正是由于放在其他 goptah,那我们应该要使用`godep`来把整个代码打包起来并提交到远程仓库,进入 src/spider 输入命令`godep save`,理想当然就能成功了.可是.....</div><div class="line"></div><div class="line">```go</div><div class="line">godep: directory &quot;/Users/xiaoyongbiao/code/src/spider/lib&quot; is not using a known version control system</div></pre></td></tr></table></figure></p>
-<p>看翻译的原因是:lib 类库并没有使用版本控制系统,也就是没有 init 一个 git 仓库,但是 lib 是我们系统自己开发的包啊,并不是我们要依赖的第三方包啊.后来经过折腾和看了这篇文章<a href="http://tonybai.com/2014/10/30/a-hole-of-godep/" target="_blank" rel="external">godep的一个“坑”</a>之后,突然明白了,main 包也就是上面的 spider 目录之外的都会认为是应该被包含进来的第三方类库,于是我把 lib 目录拉进 spider 目录中,最后再执行一次<code>godep save</code>,目录结构就变成这样了:</p>
-<p> <img src="http://static.qiziwang.net/DB28B017-6FBD-4634-BFD7-BBD8E6A2DCA6.png" alt="DB28B017-6FBD-4634-BFD7-BBD8E6A2DCA6"></p>
-<p>目录结构很清晰,由于 go 在1.7之后,把默认的变量GO15VENDOREXPERIMENT去掉并默认支持了 vendor 机制,因此 godep 把依赖的类库都打包到 vendor 中,并且也保留了原有的 Godeps 目录,这个目录的 Godeps.json 主要记录了这些依赖包的 meta 信息,可以使用<code>godep restore</code>去下载对应的包.此时我们执行<code>godep go install</code>就能顺利安装了.</p>
-
-          
+          由于 golang 的开发者把设计想得过度美好,导致 go 语言并没有自带特别强大的包依赖管理工具,不像 java 有 maven,php 有 composer,ruby 有 gem,go 的开发者只能自己动手造轮子,比如 就是一个比较流行的包管理依赖方案.123456789101112131415
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/19/2017-03-18-godep-first-try/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -625,13 +667,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/21/2017-01-21-golang-first-job/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -651,9 +693,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-21T18:00:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-21T18:00:00+08:00">
                 2017-01-21
               </time>
             
@@ -693,21 +735,16 @@
       
         
           
-            <p>学了一段golang之后,对其一些语法特性产生了深厚的兴趣,尤其是它的协程的特性,尽管php还是其他很多语言,目前也已经可以使用协程特性了,但是golang使用起来更简单,门槛更低,利用通道和go关键字就能傻瓜式实现一个协程功能,非常好用</p>
-<p>因此,我决定拿golang去搞点事,比如想把之前自己的一个创业项目的定时任务使用golang来重写.为什么要这么做呢?</p>
-<ul>
-<li>golang可以直接编译成二进制可执行程序,写好代码build完后可以直接放到服务器上定时去跑,从代码的执行效率上得比php要好;</li>
-<li>go语言具有数据库连接池的功能,很多时候的定时任务脚本都是和数据库交互的,并且是处理大批量数据的,由于php没有连接池的概念(swoole实现了)因此在处理大批量数据时候显得乏力,并且因为是单进程处理,因此经常会导致脚本执行过久,数据库一大堆链接在被占用,经常出现各种异常问题</li>
-<li>利用golang协程可以批量处理数据,让脚本执行更加快,充分利用cpu资源</li>
-</ul>
-<p>于是,先来简单体验一下golang的快感吧~由于现在只是测试,因此我并没有去使用一些orm的包,直接使用了golang自带的sql包,这次先来插入1000条数据的体验,以下是golang的代码:</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">t1 := time.Now() <span class="comment">// get current time</span></div><div class="line"><span class="comment">// sql.open返回的是一个连接池,也就是说只要执行Query或者Exec方法,golang才会从连接池中取出连接去执行</span></div><div class="line">db, _ := sql.Open(<span class="string">"mysql"</span>, <span class="string">"root:xxxx@tcp(localhost:3306)/chayou?charset=utf8"</span>)</div><div class="line"><span class="comment">// 记得关闭db</span></div><div class="line"><span class="keyword">defer</span> db.Close()</div><div class="line">done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</div><div class="line"></div><div class="line"><span class="comment">// 这里只开100个协程,为什么呢?因为mysql默认的connection数量是100,而db.Exec只有执行完毕才会自动释放连接,如果开1000个协程,会导致可能同时超过100个连接工作,就会出现too many connection的报错</span></div><div class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</div><div class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="comment">// 每个协程处理10个插入任务 100 * 10 = 1000</span></div><div class="line">    <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">10</span>; j++ &#123;</div><div class="line">      _, err := db.Exec(<span class="string">"insert into user (username) values ('golang')"</span>)</div><div class="line">      <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">        fmt.Println(err)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    done &lt;- <span class="literal">true</span></div><div class="line">  &#125;()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 使用channel保证100个协程都工作完毕了</span></div><div class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</div><div class="line">	&lt;-done</div><div class="line">&#125;</div><div class="line">elapsed := time.Since(t1)</div><div class="line">fmt.Println(<span class="string">"App elapsed: "</span>, elapsed)</div></pre></td></tr></table></figure>
-<p>以上代码就是如此简单,是不是发现比php还简单?除了协程的使用需要看一下文档,其他都是非常易用的,最后插入1000个数据使用时间是9s左右.</p>
-<p>然后,我们再用以往的php的写法去插入1000条,为了公平,php我也没去使用orm(减少sql解析时间),代码如下:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$starttime = explode(<span class="string">' '</span>,microtime());</div><div class="line">$pdo  = <span class="keyword">new</span> PDO(<span class="string">"mysql:host=localhost;dbname=chayou"</span>, <span class="string">'root'</span>, <span class="string">'xxxxxx'</span>);</div><div class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">1000</span>; $i++) &#123;</div><div class="line">	$pdo-&gt;exec(<span class="string">"insert into user (username) values ('golang&#123;$i&#125;')"</span>);</div><div class="line">&#125;</div><div class="line">$endtime = explode(<span class="string">' '</span>,microtime());</div><div class="line">$thistime = $endtime[<span class="number">0</span>]+$endtime[<span class="number">1</span>]-($starttime[<span class="number">0</span>]+$starttime[<span class="number">1</span>]);</div><div class="line">$thistime = round($thistime,<span class="number">3</span>);</div><div class="line"><span class="keyword">echo</span> <span class="string">"本网页执行耗时："</span>.$thistime.<span class="string">" 秒。"</span>.time();</div><div class="line"><span class="keyword">exit</span>;</div></pre></td></tr></table></figure>
-<p>结果执行耗时:19s,也就是说golang足足快了一倍多,而且随着数据量的增大,这个时间差也会显著增大.这就是协程的威力,他要比单进程处理数据快多了.</p>
-
-          
+          学了一段golang之后,对其一些语法特性产生了深厚的兴趣,尤其是它的协程的特性,尽管php还是其他很多语言,目前也已经可以使用协程特性了,但是golang使用起来更简单,门槛更低,利用通道和go关键字就能傻瓜式实现一个协程功能,非常好用
+因此,我决定拿golang去搞点事,比如想把之前自己的一个创
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/01/21/2017-01-21-golang-first-job/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -757,13 +794,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/12/2016-12-12-redis-zset-sort/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -783,9 +820,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-12T16:23:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-12T16:23:00+08:00">
                 2016-12-12
               </time>
             
@@ -825,140 +862,15 @@
       
         
           
-            <p>假如数据库中存在的数据量很大，直接用orderby排序的性能很低小，redis中的<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&gt;Zset跟Set之间可以有并集运算，因为他们存储的数据字符串集合，不能有一样的成员出现在一个zset中，但是为什么有了set还要有zset呢？zset叫做有序集合，而set是无序的，zset怎么做到有序的呢？就是zset的每一个成员都有一个分数与之对应，并且分数是可以重复的。有序集合的增删改由于有啦排序，执行效率就是非常快速的，即便是访问集合中间的数据也是非常高效的。</div><div class="line"></div><div class="line">关于redis zset的操作见下面链接：</div><div class="line">http://www.cnblogs.com/knowledgesea/p/4999288.html</div><div class="line"></div><div class="line">做法很简单，假如创建一个有序集合zt，就是把对应分数和用户id加进去，比如xyb分数是1000，那么执行命令```zadd zt 1000 xyb```，abc的分数是1001，那么执行命令是```zadd zt 1001 abc```，后面zadd同样的key名会重建排序。</div><div class="line"></div><div class="line">* 如何获取某个用户排名？</div><div class="line">```zrank zt xyb```这个命令意思是顺序从小到大获取xyb的排名，也就是从0开始，这个时候返回的是1（因为abc比xyb大），如果想从大到小去获取，就用```zrevrank zt xyb```，这个时候返回的时候0。</div><div class="line"></div><div class="line">* 如何获得总排名</div><div class="line">使用```zrevrange zt 0 -1```,0表示开始位置，-1表示结束位置，这里意思是把集合所有元素来进行倒序排行，那么结果应该是</div></pre></td></tr></table></figure></p>
-<p>1)”abc”<br>2)”xyb”<br>```</p>
-<p>这样就能快速去排序了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/19/2016-10-28-paicha-daochu-neicun-yichun-guzhang/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/19/2016-10-28-paicha-daochu-neicun-yichun-guzhang/" itemprop="url">填坑:订单导出内存溢出故障排查与解决</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-19T04:38:35+08:00">
-                2016-10-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="事件起因"><a href="#事件起因" class="headerlink" title="事件起因"></a>事件起因</h1><p>前两天,产品经理找到我,告知我商城后台的订单导出不了,会报500错误,于是找到运维打开日志查看,结果是”out of memory”,也就是内存溢出.但是一看数据,才2063条!按照道理来说,2000多条数据导出根本不是个事情,但是内存占用居然去到300多400mb,这肯定是不正常的.</p>
-<h1 id="排查"><a href="#排查" class="headerlink" title="排查"></a>排查</h1><p>由于这个后台的代码本身写得就不怎么行,原作者的水平有点不敢恭维,打开代码看了一下,第一眼能察觉到就是,数组太大了.这个导出几乎所有的查询都是select所有字段的,有些表,比如子订单表就有十多二十个字段,那么这个数组就会有十多二十多个索引下表,这对于内存来说简直就是一种浪费,因为并非所有字段都是拿来查询的.因此,第一步就是优化sql,只去select有用到的字段.</p>
-<p>第一步优化过后,我知道这个事情还是没有解决的,遇到内存过大,一般来说都是会把<figure class="highlight plain"><figcaption><span>'1204M')```我这里也设置了,但是这个办法只是临时解决的,假如要导更大的数据呢?不可能把所有内存都给这个导出,那样的话会影响到其他的服务的,所以我们还是先从根源去优化这个导出的数组过大的问题.</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">于是我开始第二步的查找.由于我们平台日后要实现微服务和平台化,因此我们的规范就是尽可能不去链表.这样的话,比如我要查订单123456的商品id为10的对应的商品名称,我就要先把这个订单查出来,然后把其```goods_id```放进商品查询的sql里面,原来的代码里面,是相当于一次把所有子订单拿出来,然后在在查商品的sql里面 ```in(goods_id)``` .这样的方法同样用来查对应买家名字,对应的折扣优惠券等等.这会造成一个十分数组瞬间把内存压垮.找到这个问题所在后,我的解决方案就是批查询处理.下面简单展示下伪代码</div><div class="line"></div><div class="line">```php</div><div class="line">$offset = 0;</div><div class="line">while(($ret = $query-&gt;offset($offset)-&gt;limit(500)-&gt;asArray()-&gt;all)) &#123;</div><div class="line">  // 处理逻辑,或查询商品名称/买家名称等</div><div class="line">  $data += $ret;</div><div class="line">  // 处理完毕后</div><div class="line">  $offset++;</div><div class="line">  </div><div class="line">  fputcsv($data);</div><div class="line">  .....</div><div class="line">  uset($data);  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>上面的代码很简单,就是把原来一次查出所有改为批量查出,这样的好处就是,能够不用一次把所有数据加载到内存里面,但是代价也很明显,就是会降低性能,因此分开了好几次去查询,但是我觉得导出数据的功能,可靠性 &gt; 性能,当然这里本身的性能也是有问题的,毕竟要查那么多表,即使几千条数据也是一个挺耗时的操作,如果后期性能太低再去另寻办法.</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>简单的总结一下,以后做导出,特别是数据量的导出应该注意的问题:</p>
-<ol>
-<li>sql尽量的优化,除了加索引外,还应该尽量不去查询所有的字段,只去查询有用的字段.</li>
-<li>分批处理数据,数据量太大,不要一次把所有数据拿出来,这会造成内存崩溃,并且数据库的压力也会很大.</li>
-<li>把不用的大变量uset掉,节约内存.</li>
-</ol>
-
-          
+          假如数据库中存在的数据量很大，直接用orderby排序的性能很低小，redis中的12345678910111213&gt;Zset跟Set之间可以有并集运算，因为他们存储的数据字符串集合，不能有一样的成员出现在一个zset中，但是为什么有了set还要有zset呢？zset叫做有序集合，而set是无
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/12/2016-12-12-redis-zset-sort/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1008,13 +920,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/19/2016-10-17-redis-bitmap-active-user/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -1034,9 +946,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-19T04:38:35+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-19T04:38:35+08:00">
                 2016-10-19
               </time>
             
@@ -1076,15 +988,143 @@
       
         
           
-            <p>在日常的开发中,活跃统计是比较常见的功能,比较常用的做法是会做一个数据表,然后存储目前登录的用户.功能很简单,但是使用数据库对于并发高的应用来说是代价挺大的,能不能换一种思路去实现这些功能呢?</p>
-<h1 id="bitmap算法"><a href="#bitmap算法" class="headerlink" title="bitmap算法"></a>bitmap算法</h1><p>所谓bitmap就是用一个bit位来标记某个元素对应的value，而key即是这个元素。由于采用bit为单位来存储数据，因此在可以大大的节省存储空间.</p>
-<h1 id="Redis的bitmap"><a href="#Redis的bitmap" class="headerlink" title="Redis的bitmap"></a>Redis的bitmap</h1><p>自己去实现bitmap算法是件麻烦的事情,幸好,伟大的redis再次出现,它内置了一套bitmap的操作,例如<code>setbit</code>/<code>getbit</code>/<code>bitcount</code>这几种方法,下面简单介绍一下使用这些方法来实现签到和活跃用户的功能.</p>
-<p>首先,我们来实现活跃用户统计,那么我们可以设置bitmap的key为active_user来表示.这个bitmap不需要预先创建,假如用户id为111的用户登录了,只需要调用方法<code>setbit active_user 111 1</code> 这个意思是把bitmap对应的位置(111)设置为1,那么其他用户登录同样也是这个道理,最后就会形成下图这样:</p>
-<p><img src="http://img.blog.csdn.net/20130731182321171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2FveWluZ2p1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>那么,我们怎么去统计这个bitmap呢?<code>bitcount</code>能帮到你,只需要调用<code>bitcount active_user</code>得到的结果就是目前活跃的用户数了,同样道理,只要退出就把对应user_id位置的bitmap设置为0,如用户111退出了<code>setbit active_user 111 0</code> ,就是如此简单.</p>
-<h1 id="优势在哪"><a href="#优势在哪" class="headerlink" title="优势在哪"></a>优势在哪</h1><p>其实这么简单的一个功能,很多方案也可以解决,甚至用redis的set方法也能实现,那为什么这个方法值得使用呢?因为上面提过bitmap算法是使用bit来存储数据的,除了能够节省很大一笔空间之外,还能拥有极高的性能,它的时间复杂度是O(1),操作改变的速度极快,getspool.com这个网站正是使用这种方法来统计,网站称,在模拟1亿2千8百万用户的模拟环境下,在一台MacBookPro上.典型的统计如“日用户数”(dailyunique users) 的时间消耗小于50ms, 占用16MB内存。想想大部分网站也比较难达到1亿2千八百万的用户数量,所以这个方法值得实施.</p>
+          在日常的开发中,活跃统计是比较常见的功能,比较常用的做法是会做一个数据表,然后存储目前登录的用户.功能很简单,但是使用数据库对于并发高的应用来说是代价挺大的,能不能换一种思路去实现这些功能呢?
+bitmap算法所谓bitmap就是用一个bit位来标记某个元素对应的value，而key即是这个元素。由
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/19/2016-10-17-redis-bitmap-active-user/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/19/2016-10-28-paicha-daochu-neicun-yichun-guzhang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="imshell">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodeWorld">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/10/19/2016-10-28-paicha-daochu-neicun-yichun-guzhang/" itemprop="url">填坑:订单导出内存溢出故障排查与解决</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-19T04:38:35+08:00">
+                2016-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
 
           
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          事件起因前两天,产品经理找到我,告知我商城后台的订单导出不了,会报500错误,于是找到运维打开日志查看,结果是”out of memory”,也就是内存溢出.但是一看数据,才2063条!按照道理来说,2000多条数据导出根本不是个事情,但是内存占用居然去到300多400mb,这肯定是不正常的.
+排查
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/19/2016-10-28-paicha-daochu-neicun-yichun-guzhang/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1134,13 +1174,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/03/2016-10-02-swoole-mongodb-sync-log/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -1160,9 +1200,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-03T00:30:35+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-03T00:30:35+08:00">
                 2016-10-03
               </time>
             
@@ -1202,24 +1242,16 @@
       
         
           
-            <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>自己的创业项目中,原来的日志写入是用了yii2的默认写入方式,也就是写入文件的方式,这种方式简单粗暴,也是最原始的写入方式,但是有时候要去定位日志错误,真的是一件很烦恼的事情,特别是现在并发访问量高的时候,日志刷新速度很快,而且占用磁盘也多,服务器的io同时也增高了,直接让服务器的压力增大.</p>
-<h1 id="拆出来"><a href="#拆出来" class="headerlink" title="拆出来"></a>拆出来</h1><p>因此,决定把日志独立出来,也就是存储方式改为db存储,一开始考虑了mysql,但目前mysql只有一台服务器,如果用mysql做日志存储系统,那么高并发的写入也一样会影响到平时的业务写入,因为写入频繁,会导致mysql的行所增多,所以mysql就否认了.mongodb是一个不错的选择,由于是结构化存储,很适合日志这种无规则,大规模的写入.</p>
-<h1 id="异步写入"><a href="#异步写入" class="headerlink" title="异步写入"></a>异步写入</h1><p>尽管mongodb是独立一台服务器,但是频繁同步的日志写入,也一样要求服务器不断去连接mongodb,插入mongodb,这也会导致一部分的网络开销,因此我也想到了异步的方式,<br>说到异步的第三方组件,可是很多很多的,比较常见的就是使用消息队列(RabbitMq,ActiveMq),但是要为了一个日志系统,引入一个比较重的消息队列,就不太值得了,于是想到<br>了现在很火的<code>swoole</code>.swoole的学习成本还是挺高的,如果对网络编程这块不熟,很多东西都是模模糊糊,比如什么是进程和线程的区别,什么是worker/reactor,这些概念<br>还是需要一定基础支撑的,但是没关系,本次我的需求很简单,我只需要用到swoole的<code>task</code>来实现异步写入日志就可以了.</p>
-<h1 id="swoole的task介绍"><a href="#swoole的task介绍" class="headerlink" title="swoole的task介绍"></a>swoole的task介绍</h1><p>swoole的业务逻辑部分是同步阻塞运行的,如果遇到一些耗时较大的操作,例如访问数据库、广播消息等,就会影响服务器的响应速度.因此Swoole提供了Task功能,<br>将这些耗时操作放到另外的进程去处理,当前进程继续执行后面的逻辑.这是官方对task功能的一个简述,那么正好适合于我们去做异步写入日志的功能.</p>
-<h1 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h1><p>1.首要任务是把mongodb搭建起来,并用composer安装yii2-mongodb,安装方法请参照github,很简单所以不介绍了.</p>
-<p>2.安装swoole.</p>
-<p>3.编写一个<code>swoole_server</code>.这个server主要是用来处理客户端传过来的task,我的个人做法是在项目中的console中写一个controller,集成yii/console/controller,<br>这样我们就可以直接在命令行用yii内置的方式去跑起来了,下面是代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div></pre></td><td class="code"><pre><div class="line">/** Swoole任务服务器</div><div class="line"> * Class SwooleTaskController</div><div class="line"> * @package console\controllers</div><div class="line"> */</div><div class="line">class SwooleTaskController extends Controller</div><div class="line">&#123;</div><div class="line">    /**</div><div class="line">     * @var</div><div class="line">     */</div><div class="line">    private $serv;</div><div class="line"></div><div class="line">    /**</div><div class="line">     *</div><div class="line">     */</div><div class="line">    public function actionRun()</div><div class="line">    &#123;</div><div class="line">        $this-&gt;serv = new \swoole_server(&quot;0.0.0.0&quot;, 9501);</div><div class="line">        $this-&gt;serv-&gt;set(array(</div><div class="line">            &apos;worker_num&apos; =&gt; 1,   //一般设置为服务器CPU数的1-4倍</div><div class="line">            &apos;daemonize&apos; =&gt; false,  //这里我不用swoole的守护进程,而是使用了supervisor来管理进程</div><div class="line">            &apos;max_request&apos; =&gt; 10000,</div><div class="line">            &apos;dispatch_mode&apos; =&gt; 2,</div><div class="line">            &apos;task_worker_num&apos; =&gt; 8,  //task进程的数量</div><div class="line">            &quot;task_ipc_mode &quot; =&gt; 3,  //使用消息队列通信，并设置为争抢模式,</div><div class="line">            &apos;open_eof_split&apos; =&gt; true,</div><div class="line">            &apos;package_eof&apos; =&gt; &quot;\r\n\r\n&quot;         // 分包分隔符，防止多次send被合包发送</div><div class="line">        ));</div><div class="line"></div><div class="line">        $this-&gt;serv-&gt;on(&apos;Start&apos;, array($this, &apos;onStart&apos;));</div><div class="line">        $this-&gt;serv-&gt;on(&apos;Receive&apos;, array($this, &apos;onReceive&apos;));</div><div class="line">        $this-&gt;serv-&gt;on(&apos;Task&apos;, array($this, &apos;onTask&apos;));</div><div class="line">        $this-&gt;serv-&gt;on(&apos;Finish&apos;, array($this, &apos;onFinish&apos;));</div><div class="line"></div><div class="line">        $this-&gt;serv-&gt;start();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     *</div><div class="line">     */</div><div class="line">    public function onStart()</div><div class="line">    &#123;</div><div class="line">        echo &quot;start\n&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * @param \swoole_server $serv</div><div class="line">     * @param $fd</div><div class="line">     * @param $from_id</div><div class="line">     * @param $data</div><div class="line">     */</div><div class="line">    public function onReceive(\swoole_server $serv, $fd, $from_id, $data)</div><div class="line">    &#123;</div><div class="line">        $serv-&gt;task($data);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * @param \swoole_server $serv</div><div class="line">     * @param $task_id</div><div class="line">     * @param $from_id</div><div class="line">     * @param $data</div><div class="line">     */</div><div class="line">    public function onTask(\swoole_server $serv, $task_id, $from_id, $data)</div><div class="line">    &#123;</div><div class="line">        $data = unserialize($data);</div><div class="line"></div><div class="line">        // 任务分发</div><div class="line">        if(!empty($data[&apos;action&apos;])) &#123;</div><div class="line">            $param = $data;</div><div class="line">            unset($param[&apos;action&apos;]);</div><div class="line">            $this-&gt;&#123;$data[&apos;action&apos;]&#125;($param);</div><div class="line">            $serv-&gt;finish($data);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * @param $serv</div><div class="line">     * @param $task_id</div><div class="line">     * @param $data</div><div class="line">     */</div><div class="line">    public function onFinish($serv, $task_id, $data)</div><div class="line">    &#123;</div><div class="line">        echo &quot;Task &#123;$task_id&#125; finish\n&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /** 推送报错邮件</div><div class="line">     * @param $param</div><div class="line">     */</div><div class="line">    public function sendErrorToEmail($param)</div><div class="line">    &#123;</div><div class="line">        if(!empty($param[&apos;category&apos;]) &amp;&amp; !empty($param[&apos;level&apos;]) &amp;&amp; !empty($param[&apos;message&apos;]) &amp;&amp; !empty($param[&apos;prefix&apos;])) &#123;</div><div class="line">            Chayou::sendEmail(&apos;web-error&apos;,</div><div class="line">                [&apos;category&apos; =&gt; $param[&apos;category&apos;], &apos;level&apos; =&gt; $param[&apos;level&apos;], &apos;message&apos; =&gt; $param[&apos;message&apos;],</div><div class="line">                    &apos;prefix&apos; =&gt; $param[&apos;prefix&apos;]], Yii::$app-&gt;params[&apos;adminEmail&apos;], &apos;系统报警:&apos; . $param[&apos;category&apos;]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /** 插入mongodb日志库</div><div class="line">     * @param $param</div><div class="line">     */</div><div class="line">    public function insertLog($param)</div><div class="line">    &#123;</div><div class="line">        if(!empty($param[&apos;logCollection&apos;]) &amp;&amp; !empty($param[&apos;rows&apos;])) &#123;</div><div class="line">            Yii::$app-&gt;mongodb-&gt;getCollection($param[&apos;logCollection&apos;])-&gt;batchInsert($param[&apos;rows&apos;]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>4.yii2-mongodb官方扩展中的mongodb日志target是默认使用同步方式插入的,因此我必须继承这个target,然后修改为使用swoole的方式去发送任务到swoole_server上面.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">&apos;mongodb&apos; =&gt; [</div><div class="line">    &apos;class&apos; =&gt; &apos;\yii\mongodb\Connection&apos;,</div><div class="line">    &apos;dsn&apos; =&gt; &apos;mongodb://your name:your pass@your host:your port/your dbname&apos;,</div><div class="line">],</div><div class="line">...</div><div class="line">&apos;log&apos; =&gt; [</div><div class="line">    &apos;traceLevel&apos; =&gt; YII_DEBUG ? 3 : 0,</div><div class="line">    &apos;targets&apos; =&gt; [</div><div class="line">        [</div><div class="line">            &apos;class&apos; =&gt; &apos;common\components\MongoDbTarget&apos;,</div><div class="line">            &apos;logCollection&apos; =&gt; &apos;error_logs&apos;,</div><div class="line">            &apos;levels&apos; =&gt; [&apos;error&apos;],</div><div class="line">        ],</div><div class="line">    ],</div><div class="line">],</div><div class="line">...</div><div class="line">// swoole客服端链接server的配置</div><div class="line">&apos;swooleTaskClient&apos; =&gt; [</div><div class="line">    &apos;class&apos; =&gt; &apos;common\helpers\SwooleTaskClient&apos;,</div><div class="line">    &apos;host&apos; =&gt; &apos;112.74.***.***&apos;,    // server端的ip,本机可以使用127.0.0.1</div><div class="line">    &apos;port&apos; =&gt; 9501</div><div class="line">],</div></pre></td></tr></table></figure>
-<p>下面是swooleTaskClient的代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">class SwooleTaskClient extends Component</div><div class="line">&#123;</div><div class="line">    /**</div><div class="line">     * @var</div><div class="line">     */</div><div class="line">    public $client;</div><div class="line">    /**</div><div class="line">     * @var string 地址</div><div class="line">     */</div><div class="line">    public $host;</div><div class="line">    /**</div><div class="line">     * @var int 端口</div><div class="line">     */</div><div class="line">    public $port;</div><div class="line"></div><div class="line">    public function init()</div><div class="line">    &#123;</div><div class="line">        $this-&gt;client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);</div><div class="line">        $this-&gt;client-&gt;connect($this-&gt;host, $this-&gt;port);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /** Swoole Client发送</div><div class="line">     * @param $data</div><div class="line">     */</div><div class="line">    public function send($data)</div><div class="line">    &#123;</div><div class="line">        $this-&gt;client-&gt;send($data);</div><div class="line">        $this-&gt;client-&gt;close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>下面是common\components\MongoDbTarget的代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">class MongoDbTarget extends BaseMongoDbTarget</div><div class="line">&#123;</div><div class="line">    /**</div><div class="line">     * Stores log messages to MongoDB collection.</div><div class="line">     */</div><div class="line">    public function export()</div><div class="line">    &#123;</div><div class="line">        /* @var SwooleTaskClient $swooleTaskClient */</div><div class="line">        $swooleTaskClient = Yii::$app-&gt;swooleTaskClient;</div><div class="line">        $rows = [];</div><div class="line">        foreach ($this-&gt;messages as $message) &#123;</div><div class="line">            list($text, $level, $category, $timestamp) = $message;</div><div class="line">            $resultMsg = $this-&gt;formatMessage($message);</div><div class="line"></div><div class="line">            // 只记录严重错误和500的错误</div><div class="line">            if($level &lt;= Logger::LEVEL_ERROR &amp;&amp; Yii::$app-&gt;response-&gt;statusCode == 500) &#123;</div><div class="line">                $rows[] = [</div><div class="line">                    &apos;level&apos; =&gt; $level,</div><div class="line">                    &apos;category&apos; =&gt; $category,</div><div class="line">                    &apos;log_time&apos; =&gt; $timestamp,</div><div class="line">                    &apos;prefix&apos; =&gt; $this-&gt;getMessagePrefix($message),</div><div class="line">                    &apos;message&apos; =&gt; $resultMsg,</div><div class="line">                ];</div><div class="line"></div><div class="line">                // 500错误直接报警，目前使用邮箱推送</div><div class="line">                if (YII_ENV == &apos;prod&apos;) &#123;</div><div class="line">                    $swooleTaskClient-&gt;send(serialize(</div><div class="line">                            [&apos;action&apos; =&gt; &apos;sendErrorToEmail&apos;, &apos;category&apos; =&gt; $category, &apos;level&apos; =&gt; $level, &apos;message&apos; =&gt; VarDumper::dumpAsString($resultMsg, 10, true),</div><div class="line">                                &apos;prefix&apos; =&gt; $this-&gt;getMessagePrefix($message)]) . &quot;\r\n\r\n&quot;);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        $swooleTaskClient-&gt;send(serialize(</div><div class="line">            [&apos;action&apos; =&gt; &apos;insertLog&apos;, &apos;rows&apos; =&gt; $rows, &apos;logCollection&apos; =&gt; $this-&gt;logCollection]) .&quot;\r\n\r\n&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public function formatMessage($message)</div><div class="line">    &#123;</div><div class="line">        list($text, $level, $category, $timestamp) = $message;</div><div class="line">        if (!is_string($text)) &#123;</div><div class="line">            // exceptions may not be serializable if in the call stack somewhere is a Closure</div><div class="line">            if ($text instanceof \Throwable || $text instanceof \Exception) &#123;</div><div class="line">                $text = (string) $text;</div><div class="line">            &#125; else &#123;</div><div class="line">                $text = VarDumper::export($text);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        $traces = [];</div><div class="line">        if (isset($message[4])) &#123;</div><div class="line">            foreach ($message[4] as $trace) &#123;</div><div class="line">                $traces[] = &quot;in &#123;$trace[&apos;file&apos;]&#125;:&#123;$trace[&apos;line&apos;]&#125;&quot;;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return $text</div><div class="line">        . (empty($traces) ? &apos;&apos; : &quot;\n    &quot; . implode(&quot;\n    &quot;, $traces));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可以看到,在mongodbTarget这个类中,使用了swooleTaskClient去发送一段序列化的数据到server上面,然后server根据不同的action执行对应的方法,这里要主要一个坑就是,<br>由于我是foreach里面去send任务的,因从swoole可能会认为你这个不是分段发送的,而是合在一起发送的,解决方式就是用一个特定的分割符号去告知server,这是多次发送,而不是合并发送<br>具体可以参考我这篇博文:<a href="http://smartyphp.info/2016/09/09/swoole-task-send.html" target="_blank" rel="external">关于swoole的taks，多次send会出现包合并发送的情况</a></p>
-<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>这个改动已经更新到线上了,经过一段时间的观察,效果还是不错的,对于高并发的日志插入已经不是任何问题了,异步大法好~后期一些耗时操作的优化也可以使用类似的办法,使用swoole或者<br>消息队列的方式去解耦,去减轻并发带来的压力.</p>
-
-          
+          起因自己的创业项目中,原来的日志写入是用了yii2的默认写入方式,也就是写入文件的方式,这种方式简单粗暴,也是最原始的写入方式,但是有时候要去定位日志错误,真的是一件很烦恼的事情,特别是现在并发访问量高的时候,日志刷新速度很快,而且占用磁盘也多,服务器的io同时也增高了,直接让服务器的压力增大.
+拆
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/03/2016-10-02-swoole-mongodb-sync-log/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1269,13 +1301,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/27/2016-09-27-miao-sha-gou-si-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -1295,9 +1327,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-27T06:58:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-27T06:58:00+08:00">
                 2016-09-27
               </time>
             
@@ -1337,19 +1369,15 @@
       
         
           
-            <p>今天中午，组长找我聊天，说我们的商城可能准备做一个秒杀系统，按照他的说法，目前的系统架构，支撑个百来并发量都是不太行的，于是先和我商量关于这个秒杀系统的想法和一些做法。听到这个消息，说实话我是挺激动的，毕竟工作一年多了，这方面的概念理论就看多了，但是还是缺乏一定的实践经验，于是下定决心去做好它，于是就开始我的第一步构思：秒杀—如何防止超卖？</p>
-<h1 id="数据库事务"><a href="#数据库事务" class="headerlink" title="数据库事务"></a>数据库事务</h1><p>超卖是秒杀一个首要解决的问题，现在的商城就是会出现超卖情况的，很多用户下单成功了，但是商品库存居然变为负数了，这就涉及到数据库一个事务问题，看过以前的代码，下单是根本没有做任何防止并发请求的处理的，我的第一个想法就是数据库事务，但是使用事务虽然是最简单的，但是也是最耗损性能的，或许现在这个秒杀只是为了撑个百来个并发，但是做程序也应该想到扩展性和未来的业务发展，所以我就否定了数据库事务这个想法。</p>
-<h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><p><code>redis</code>一直只是作为我的缓存工作使用，但是<code>redis</code>的强大之处远非缓存，因此查阅了一些资料，得知redis是单线程的，而且他的操作都是原子性的，换做人话来说就是能够保持数据一致。为了性能和库存的准备实时性，库存的控制应该放在缓存层来做而非数据库层，因为无论读还是写，redis都会比mysql强大许多。</p>
-<h1 id="具体实施"><a href="#具体实施" class="headerlink" title="具体实施"></a>具体实施</h1><p>这里我将会用到redis的一个原子性方法<code>decr</code>。 这个方法是可以递减某个key对应的value的，并且是保持一致的，也就是无论多少请求到达，都会只去顺序减去一次，有类似队列的功效，下面说说我的操作步骤。</p>
-<ol>
-<li>把所有要秒杀的商品的库存事先写到缓存中去，如商品ID为1的key就是<code>goods1</code>这样</li>
-<li>代码中，判断是否抢空，就使用</li>
-</ol>
-<p><code>$result = $redis-&gt;decr(&#39;goods1&#39;)</code></p>
-<p>这句代码会返回goods被减去后的数量，也就是当商品可能剩下0的时候，那么这<code>$result</code>变量就会是-1了，那么我们就可以告知用户，这个商品已经被抢光了。<br>3.后续的请求都是判断，如果这个<code>$result</code>少于0都是表示库存完结了。</p>
-<h1 id="不完美的地方"><a href="#不完美的地方" class="headerlink" title="不完美的地方"></a>不完美的地方</h1><p>这个判断在ab用并发请求测试过，基本上都不会出现负数库存的情况，但是这个只是针对每次请求只能购买一件的情况来设计的，如果是多件要这样设计就走不通了，得根据产品最终的需求和协商再来构思这块如何能够做的更好。</p>
-
-          
+          今天中午，组长找我聊天，说我们的商城可能准备做一个秒杀系统，按照他的说法，目前的系统架构，支撑个百来并发量都是不太行的，于是先和我商量关于这个秒杀系统的想法和一些做法。听到这个消息，说实话我是挺激动的，毕竟工作一年多了，这方面的概念理论就看多了，但是还是缺乏一定的实践经验，于是下定决心去做好它，于是
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/27/2016-09-27-miao-sha-gou-si-1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1399,13 +1427,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/22/2016-09-22-yii2-pjax-warning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="imshell">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="CodeWorld">
     </span>
 
     
@@ -1425,9 +1453,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-22T21:23:00+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-22T21:23:00+08:00">
                 2016-09-22
               </time>
             
@@ -1467,12 +1495,17 @@
       
         
           
-            <ul>
-<li>其实是很久之前遇到的问题了，但发现忘记写个总结了，今天看yii2群里的一个同学也出现这个问题，因此又想起来了。</li>
-<li>事情是这样的，由于家里网速很慢，因此使用pjax的时候经常会请求超过1秒以上，而恰好yii自带的pjax组件又是设置超时时间是一秒的！因此每次pjax请求超时都会自动转为普通请求，当时调了半天也不知什么原因，后来才了解到pjax的超时机制，最后把组件的timeout调高之后就一切ok了。</li>
-</ul>
-
           
+其实是很久之前遇到的问题了，但发现忘记写个总结了，今天看yii2群里的一个同学也出现这个问题，因此又想起来了。
+事情是这样的，由于家里网速很慢，因此使用pjax的时候经常会请求超过1秒以上，而恰好yii自带的pjax组件又是设置超时时间是一秒的！因此每次pjax请求超时都会自动转为普通请求，当时调
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/22/2016-09-22-yii2-pjax-warning/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1545,7 +1578,7 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-author-name" itemprop="name">imshell</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -1557,7 +1590,7 @@
                 <a href="/archives/">
               
                   <span class="site-state-item-count">15</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
@@ -1604,13 +1637,13 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">imshell</span>
 
   
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
 
 
 
@@ -1618,7 +1651,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
 
 
 
@@ -1773,21 +1806,7 @@
   
 
   
-  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
-  
-  
-    <script type="text/javascript" src="/live2d/script.js"></script>
-    <canvas id="live2dcanvas" width="150" height="300" class="live2d"></canvas>
-    <style>
-      #live2dcanvas {
-        position: fixed;
-        right: 0px;
-        z-index: 999;
-        pointer-events: none;
-        bottom: -20px;
-      }
-    </style>
-    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/z16/z16.model.json",0.5)</script>
+  <script type="text/javascript" src="http://obg6dzeur.bkt.clouddn.com/canvas-nest.js"></script>
   
 </body>
 </html>
